@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { InquiryService } from '../../services/inquiry.service';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { CustomizationInquiry } from '../../interfaces/inquiry.interface';
@@ -8,7 +8,7 @@ import { CustomizationInquiry } from '../../interfaces/inquiry.interface';
 @Component({
   selector: 'app-customization-inquiry',
   standalone: true,
-  imports: [FormsModule, RouterLink, ScrollRevealDirective],
+  imports: [FormsModule, ScrollRevealDirective],
   templateUrl: './customization-inquiry.component.html',
   styleUrl: './customization-inquiry.component.scss'
 })

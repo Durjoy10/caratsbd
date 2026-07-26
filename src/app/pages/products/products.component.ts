@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../interfaces/product.interface';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
@@ -8,7 +7,7 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [RouterLink, ProductCardComponent, ScrollRevealDirective],
+  imports: [ProductCardComponent, ScrollRevealDirective],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
