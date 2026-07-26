@@ -1,14 +1,17 @@
+:host {
+  display: block;
+}
+
 .product-card {
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  group: true;
 
   &__image-wrap {
     position: relative;
     overflow: hidden;
     aspect-ratio: 3 / 4;
-    background: var(--clr-card);
+    background: #181818;
   }
 
   &__image {
@@ -30,18 +33,17 @@
     }
   }
 
-  &:hover &__image--primary { transform: scale(1.06); opacity: 0; }
-  &:hover &__image--secondary { opacity: 1; transform: scale(1.03); }
-  &:hover &__image--primary:last-of-type { opacity: 1; transform: scale(1.06); }
+  &:hover &__image--primary { transform: scale(1.06); }
+  &:hover &__image--secondary { opacity: 1; transform: scale(1.06); }
 
   &__overlay {
     position: absolute;
     inset: 0;
-    background: rgba(10, 10, 10, 0.4);
+    background: linear-gradient(to top, rgba(10, 10, 10, 0.65) 0%, rgba(10, 10, 10, 0) 50%);
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    padding-bottom: 28px;
+    padding-bottom: 24px;
     opacity: 0;
     transition: opacity 0.4s ease;
   }
@@ -65,14 +67,14 @@
     font-size: 48px;
     font-weight: 600;
     color: var(--clr-gold);
-    opacity: 0.08;
+    opacity: 0.15;
     line-height: 1;
     pointer-events: none;
     user-select: none;
     transition: opacity 0.4s;
   }
 
-  &:hover &__watermark { opacity: 0.04; }
+  &:hover &__watermark { opacity: 0.08; }
 
   &__body {
     padding: 16px 0 0;
@@ -86,6 +88,7 @@
     letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--clr-gold);
+    font-weight: 500;
   }
 
   &__name {
@@ -99,7 +102,7 @@
   &__material {
     font-size: 11px;
     letter-spacing: 1px;
-    color: var(--clr-muted);
+    color: #A8A296;
     margin-top: 2px;
   }
 }

@@ -9,8 +9,20 @@
   --clr-gold-dim:  #8B6F42;
   --clr-gold-pale: #E8D5B0;
   --clr-cream:     #F5F0E8;
-  --clr-muted:     #6B6B6B;
+  --clr-muted:     #A8A296;
   --clr-border:    #2A2A2A;
+
+  /* Aliases for legacy component SCSS files */
+  --warm-ivory:    #F5F0E8;
+  --ivory-dim:     #D5CFC2;
+  --antique-gold:  #C9A96E;
+  --muted-gold:    #B89F70;
+  --deep-charcoal: #141414;
+  --obsidian:      #0A0A0A;
+  --warm-dark:     #161616;
+  --font-display:  'Cormorant Garamond', Georgia, serif;
+  --font-body:     'Jost', sans-serif;
+
   --ff-display: 'Cormorant Garamond', Georgia, serif;
   --ff-body:    'Jost', sans-serif;
   --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);

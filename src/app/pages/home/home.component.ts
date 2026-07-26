@@ -43,10 +43,10 @@ export class HomeComponent implements OnInit {
   getCatImage(slug: string): string {
     const map: Record<string, string> = {
       rings:     '1605100804763-247f67b3557e',
-      necklaces: '1535632066927-ab7c9ab60908',
-      bracelets: '1573408301185-9519f94815d7',
-      chains:    '1610483172917-4f80beb00d22',
-      earrings:  '1617038220319-276d3cfab638',
+      necklaces: '1599643478518-a784e5dc4c8f',
+      bracelets: '1611591437281-460bfbe1220a',
+      chains:    '1515562141207-7a88fb7ce338',
+      earrings:  '1599643478518-a784e5dc4c8f',
     };
     return map[slug] || '1515562141207-7a88fb7ce338';
   }
