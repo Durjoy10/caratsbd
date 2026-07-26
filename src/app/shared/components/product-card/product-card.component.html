@@ -1,0 +1,28 @@
+<article class="product-card"
+         [routerLink]="['/product', product().slug]"
+         (mouseenter)="hovered.set(true)"
+         (mouseleave)="hovered.set(false)">
+  <div class="product-card__image-wrap">
+    <img [src]="product().images[0] || 'assets/images/placeholder.jpg'"
+         [alt]="product().name"
+         class="product-card__image product-card__image--primary"
+         loading="lazy" />
+    @if (product().images[1]) {
+      <img [src]="product().images[1]"
+           [alt]="product().name + ' alternate'"
+           class="product-card__image product-card__image--secondary"
+           loading="lazy" />
+    }
+    <div class="product-card__overlay">
+      <span class="product-card__cta">View Details</span>
+    </div>
+    <!-- Gold watermark number -->
+    <span class="product-card__watermark">{{ (index() + 1).toString().padStart(2, '0') }}</span>
+  </div>
+
+  <div class="product-card__body">
+    <span class="product-card__category">{{ product().category }}</span>
+    <h3 class="product-card__name">{{ product().name }}</h3>
+    <span class="product-card__material">{{ product().material || '18K Gold' }}</span>
+  </div>
+</article>

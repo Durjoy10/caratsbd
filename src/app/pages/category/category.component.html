@@ -1,0 +1,62 @@
+<!-- Category Hero -->
+@if (category(); as cat) {
+  <section class="cat-hero parallax-container">
+    <div class="cat-hero__bg parallax-bg"
+         [style.background-image]="'url(' + (cat.coverImage || cat.image) + ')'">
+    </div>
+    <div class="cat-hero__overlay"></div>
+    <div class="cat-hero__content">
+      <span class="section-eyebrow fade-in-up">Collection</span>
+      <h1 class="fade-in-up delay-2">{{ cat.name }}</h1>
+      <p class="fade-in-up delay-3">{{ cat.description }}</p>
+    </div>
+  </section>
+}
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <a routerLink="/">Home</a>
+  <span>/</span>
+  <a routerLink="/products">Collections</a>
+  <span>/</span>
+  <span class="breadcrumb__current">{{ category()?.name }}</span>
+</div>
+
+<!-- Products -->
+<section class="cat-products">
+  <div class="cat-products__header" appScrollReveal>
+    <h2>{{ products().length }} Pieces</h2>
+    <div class="divider-gold divider-gold--left"></div>
+  </div>
+
+  <div class="cat-products__grid">
+    @for (product of products(); track product._id; let i = $index) {
+      <app-product-card
+        [product]="product"
+        appScrollReveal [revealDelay]="(i % 4) * 100">
+      </app-product-card>
+    }
+  </div>
+
+  @if (products().length === 0 && !loading()) {
+    <div class="cat-products__empty">
+      <p>No pieces available in this collection yet.</p>
+      <a routerLink="/products" class="btn-gold" style="margin-top:2rem"><span>Browse All</span></a>
+    </div>
+  }
+</section>
+
+<!-- Related CTA -->
+<section class="related-cta parallax-container">
+  <div class="related-cta__bg parallax-bg"
+       style="background-image: url('https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=1600&q=80')">
+  </div>
+  <div class="related-cta__overlay"></div>
+  <div class="related-cta__content">
+    <h2 appScrollReveal>Can't find what you're looking for?</h2>
+    <p appScrollReveal [revealDelay]="200">Commission a bespoke piece tailored exactly to your vision.</p>
+    <a routerLink="/customization" class="btn-gold" appScrollReveal [revealDelay]="350">
+      <span>Request Customization</span>
+    </a>
+  </div>
+</section>

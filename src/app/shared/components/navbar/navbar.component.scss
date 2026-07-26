@@ -1,0 +1,204 @@
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 28px 0;
+  transition: all 0.5s ease;
+  background: transparent;
+
+  &--scrolled {
+    padding: 16px 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--clr-border);
+  }
+
+  &__inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+
+  &__logo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    margin-right: auto;
+  }
+
+  &__logo-text {
+    font-family: var(--ff-display);
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: 8px;
+    color: var(--clr-cream);
+    transition: color 0.3s;
+
+    &:hover { color: var(--clr-gold); }
+  }
+
+  &__logo-sub {
+    font-size: 8px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--clr-gold);
+    margin-top: 2px;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+
+  &__link {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--clr-muted);
+    transition: color 0.3s;
+    cursor: pointer;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--clr-gold);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      transform-origin: left;
+    }
+
+    &:hover, &.active {
+      color: var(--clr-cream);
+      &::after { transform: scaleX(1); }
+    }
+  }
+
+  &__dropdown-wrap {
+    position: relative;
+
+    &:hover .navbar__dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 20px);
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    min-width: 180px;
+    padding: 12px 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+
+    &-item {
+      display: block;
+      padding: 10px 24px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--clr-muted);
+      transition: var(--transition);
+
+      &:hover { color: var(--clr-gold); padding-left: 30px; }
+    }
+  }
+
+  &__cta {
+    font-size: 10px;
+    padding: 12px 28px;
+  }
+
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px;
+
+    span {
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--clr-cream);
+      transition: var(--transition);
+    }
+
+    &.open {
+      span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+      span:nth-child(2) { opacity: 0; }
+      span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    }
+  }
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--clr-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  padding-top: 80px;
+
+  &--open { opacity: 1; pointer-events: all; }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 40px;
+  }
+
+  &__link {
+    font-family: var(--ff-display);
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--clr-cream);
+    transition: color 0.3s;
+    &:hover { color: var(--clr-gold); }
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+  }
+
+  &__label {
+    font-size: 9px;
+    margin-bottom: 8px;
+  }
+
+  &__sub-link {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--clr-muted);
+    transition: color 0.3s;
+    &:hover { color: var(--clr-gold); }
+  }
+}
+
+@media (max-width: 1024px) {
+  .navbar {
+    &__nav, &__cta { display: none; }
+    &__hamburger { display: flex; }
+    &__inner { padding: 0 24px; }
+  }
+}

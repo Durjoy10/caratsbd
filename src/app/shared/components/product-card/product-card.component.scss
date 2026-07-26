@@ -1,0 +1,105 @@
+.product-card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  group: true;
+
+  &__image-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    background: var(--clr-card);
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.5s ease;
+
+    &--primary {
+      position: absolute;
+      inset: 0;
+    }
+
+    &--secondary {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+    }
+  }
+
+  &:hover &__image--primary { transform: scale(1.06); opacity: 0; }
+  &:hover &__image--secondary { opacity: 1; transform: scale(1.03); }
+  &:hover &__image--primary:last-of-type { opacity: 1; transform: scale(1.06); }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.4);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 28px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  &:hover &__overlay { opacity: 1; }
+
+  &__cta {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--clr-cream);
+    border-bottom: 1px solid var(--clr-gold);
+    padding-bottom: 4px;
+  }
+
+  &__watermark {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-family: var(--ff-display);
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--clr-gold);
+    opacity: 0.08;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 0.4s;
+  }
+
+  &:hover &__watermark { opacity: 0.04; }
+
+  &__body {
+    padding: 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__category {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--clr-gold);
+  }
+
+  &__name {
+    font-family: var(--ff-display);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--clr-cream);
+    line-height: 1.3;
+  }
+
+  &__material {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--clr-muted);
+    margin-top: 2px;
+  }
+}

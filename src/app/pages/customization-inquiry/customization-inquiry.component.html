@@ -1,0 +1,144 @@
+<!-- Hero -->
+<section class="inquiry-hero parallax-container">
+  <div class="inquiry-hero__bg parallax-bg"
+       style="background-image: url('https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1600&q=80')">
+  </div>
+  <div class="inquiry-hero__overlay"></div>
+  <div class="inquiry-hero__content">
+    <span class="section-eyebrow fade-in-up">Bespoke Service</span>
+    <h1 class="fade-in-up delay-2">Commission<br><em>Your Piece</em></h1>
+    <p class="fade-in-up delay-3">
+      Every extraordinary piece begins with a conversation.<br>
+      Tell us your vision — we'll bring it to life.
+    </p>
+  </div>
+</section>
+
+<!-- Process Steps -->
+<section class="process">
+  <div class="process__inner">
+    <div class="process__header" appScrollReveal>
+      <span class="section-eyebrow">How It Works</span>
+      <h2>The Bespoke Journey</h2>
+      <div class="divider-gold"></div>
+    </div>
+    <div class="process__steps">
+      @for (step of processSteps; track step.num; let i = $index) {
+        <div class="process__step" appScrollReveal [revealDelay]="i * 150">
+          <span class="process__step-num">{{ step.num }}</span>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.desc }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Inquiry Form -->
+<section class="inquiry-form-section">
+  <div class="inquiry-form-section__inner">
+    <div class="inquiry-form-section__info" appScrollReveal>
+      <span class="section-eyebrow">Get Started</span>
+      <h2>Share Your Vision</h2>
+      <div class="divider-gold divider-gold--left"></div>
+      <p>
+        Fill in the form with as much detail as you'd like. Our design
+        team will review your request and reach out within 24 hours to
+        begin crafting your one-of-a-kind piece.
+      </p>
+      <div class="inquiry-form-section__contact-items">
+        <div class="contact-item">
+          <span class="contact-item__icon">✦</span>
+          <div>
+            <strong>Response Time</strong>
+            <span>Within 24 hours</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item__icon">✦</span>
+          <div>
+            <strong>Consultation</strong>
+            <span>Free & no obligation</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item__icon">✦</span>
+          <div>
+            <strong>Timeline</strong>
+            <span>15–30 working days</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="inquiry-form" appScrollReveal [revealDelay]="200">
+      <!-- Success State -->
+      @if (submitted()) {
+        <div class="inquiry-form__success">
+          <div class="success-icon">✦</div>
+          <h3>Inquiry Received</h3>
+          <p>{{ successMessage() }}</p>
+          <button class="btn-gold" (click)="resetForm()"><span>Submit Another</span></button>
+        </div>
+      } @else {
+        <!-- Form -->
+        <form (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input id="name" type="text" [(ngModel)]="form.name" name="name"
+                     placeholder="Your full name" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input id="email" type="email" [(ngModel)]="form.email" name="email"
+                     placeholder="your@email.com" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone Number *</label>
+              <input id="phone" type="tel" [(ngModel)]="form.phone" name="phone"
+                     placeholder="+880 ..." required />
+            </div>
+            <div class="form-group">
+              <label for="category">Jewellery Type *</label>
+              <select id="category" [(ngModel)]="form.category" name="category" required>
+                <option value="" disabled>Select category</option>
+                <option value="Ring">Ring</option>
+                <option value="Necklace">Necklace</option>
+                <option value="Bracelet">Bracelet</option>
+                <option value="Chain">Chain</option>
+                <option value="Earrings">Earrings</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="budget">Approximate Budget (Optional)</label>
+            <input id="budget" type="text" [(ngModel)]="form.budget" name="budget"
+                   placeholder="e.g., ৳20,000 – ৳50,000" />
+          </div>
+
+          <div class="form-group">
+            <label for="description">Describe Your Vision *</label>
+            <textarea id="description" [(ngModel)]="form.description" name="description"
+                      rows="6" placeholder="Tell us about the piece you have in mind — style, occasion, any references or inspirations..." required></textarea>
+          </div>
+
+          <div class="form-group form-group--checkbox">
+            <input type="checkbox" id="agree" [ngModel]="agreed()" (ngModelChange)="agreed.set($event)" name="agree" />
+            <label for="agree">I agree to be contacted by the Carats team regarding this inquiry.</label>
+          </div>
+
+          <button type="submit" class="btn-gold btn-submit" [disabled]="isSubmitting() || !agreed()">
+            <span>{{ isSubmitting() ? 'Sending…' : 'Submit Inquiry' }}</span>
+          </button>
+        </form>
+      }
+    </div>
+  </div>
+</section>

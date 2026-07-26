@@ -1,0 +1,133 @@
+<!-- Hero -->
+<section class="contact-hero parallax-container">
+  <div class="contact-hero__bg parallax-bg"
+       style="background-image: url('https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1600&q=80')">
+  </div>
+  <div class="contact-hero__overlay"></div>
+  <div class="contact-hero__content">
+    <span class="section-eyebrow fade-in-up">We'd Love to Hear From You</span>
+    <h1 class="fade-in-up delay-2">Visit Us</h1>
+    <p class="fade-in-up delay-3">Our showroom is open to welcome you.</p>
+  </div>
+</section>
+
+<!-- Contact Body -->
+<section class="contact-body">
+  <div class="contact-body__inner">
+
+    <!-- Info Cards -->
+    <div class="contact-info" appScrollReveal>
+      <div class="contact-card">
+        <div class="contact-card__icon">✦</div>
+        <h3>Location</h3>
+        <p>House 42, Road 11<br>Dhanmondi, Dhaka 1209<br>Bangladesh</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card__icon">✦</div>
+        <h3>Hours</h3>
+        <p>Saturday – Thursday<br>10:00 AM – 8:00 PM</p>
+        <p style="margin-top:.5rem; font-size:.75rem; opacity:.6">Friday: Closed</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card__icon">✦</div>
+        <h3>Phone & WhatsApp</h3>
+        <p><a href="tel:+8801234567890">+880 123 456 7890</a></p>
+        <p><a href="https://wa.me/8801234567890" target="_blank">Chat on WhatsApp</a></p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card__icon">✦</div>
+        <h3>Email</h3>
+        <p><a href="mailto:hello@caratsjewellery.com">hello&#64;caratsjewellery.com</a></p>
+        <p style="margin-top:.5rem; font-size:.75rem; opacity:.6">We reply within 24 hours</p>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="contact-map" appScrollReveal [revealDelay]="200">
+      <div class="contact-map__header">
+        <span class="section-eyebrow">Find Us</span>
+        <h2>Our Showroom</h2>
+        <div class="divider-gold divider-gold--left"></div>
+      </div>
+      <div class="contact-map__embed">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.178!2d90.3742!3d23.7461!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sDhanmondi%2C+Dhaka!5e0!3m2!1sen!2sbd!4v1"
+          width="100%"
+          height="100%"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Carats Showroom Location">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Form -->
+<section class="contact-form-section">
+  <div class="contact-form-section__inner">
+    <div class="contact-form-section__heading" appScrollReveal>
+      <span class="section-eyebrow">Drop Us a Line</span>
+      <h2>Send a Message</h2>
+      <div class="divider-gold"></div>
+      <p>Have a question about a specific piece, our process, or anything else?<br>We're here to help.</p>
+    </div>
+
+    <div class="contact-form" appScrollReveal [revealDelay]="200">
+      @if (messageSent()) {
+        <div class="contact-form__success">
+          <div class="success-icon">✦</div>
+          <h3>Message Sent</h3>
+          <p>Thank you for reaching out. Our team will get back to you within 24 hours.</p>
+          <button class="btn-gold" (click)="messageSent.set(false)"><span>Send Another</span></button>
+        </div>
+      } @else {
+        <form (ngSubmit)="sendMessage()">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cname">Full Name *</label>
+              <input id="cname" type="text" [(ngModel)]="contactForm.name" name="cname"
+                     placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label for="cemail">Email *</label>
+              <input id="cemail" type="email" [(ngModel)]="contactForm.email" name="cemail"
+                     placeholder="your@email.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="csubject">Subject</label>
+            <input id="csubject" type="text" [(ngModel)]="contactForm.subject" name="csubject"
+                   placeholder="What is this about?" />
+          </div>
+          <div class="form-group">
+            <label for="cmessage">Message *</label>
+            <textarea id="cmessage" [(ngModel)]="contactForm.message" name="cmessage"
+                      rows="5" placeholder="Write your message here…" required></textarea>
+          </div>
+          <button type="submit" class="btn-gold btn-submit">
+            <span>Send Message</span>
+          </button>
+        </form>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Social + Instagram strip -->
+<section class="social-strip parallax-container">
+  <div class="social-strip__bg parallax-bg"
+       style="background-image: url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1600&q=80')">
+  </div>
+  <div class="social-strip__overlay"></div>
+  <div class="social-strip__content">
+    <h2 appScrollReveal>Follow Our Story</h2>
+    <p appScrollReveal [revealDelay]="150">&#64;carats.jewellery on Instagram</p>
+    <div class="social-strip__links" appScrollReveal [revealDelay]="300">
+      <a href="#" class="btn-gold"><span>Instagram</span></a>
+      <a href="#" class="btn-ghost">Facebook</a>
+    </div>
+  </div>
+</section>

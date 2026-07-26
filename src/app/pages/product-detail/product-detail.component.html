@@ -1,0 +1,110 @@
+@if (product(); as prod) {
+  <div class="product-detail">
+
+    <!-- Back -->
+    <div class="product-detail__back">
+      <button (click)="goBack()" class="back-btn">
+        <span class="back-btn__arrow">←</span>
+        <span>Back</span>
+      </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="product-detail__body">
+
+      <!-- Gallery -->
+      <div class="product-gallery" appScrollReveal>
+        <div class="product-gallery__main">
+          <img [src]="activeImage()" [alt]="prod.name" class="product-gallery__img" />
+          <div class="product-gallery__zoom-hint">Hover to explore</div>
+        </div>
+        @if (prod.images.length > 1) {
+          <div class="product-gallery__thumbs">
+            @for (img of prod.images; track img) {
+              <button
+                class="product-gallery__thumb"
+                [class.active]="img === activeImage()"
+                (click)="setActiveImage(img)">
+                <img [src]="img" [alt]="prod.name" />
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Info -->
+      <div class="product-info">
+        <div appScrollReveal [revealDelay]="150">
+          <a [routerLink]="['/category', prod.categorySlug || prod.category.toLowerCase()]" class="product-info__category">
+            {{ prod.category }}
+          </a>
+          <h1 class="product-info__name">{{ prod.name }}</h1>
+          <div class="divider-gold divider-gold--left"></div>
+        </div>
+
+        <div class="product-info__material" appScrollReveal [revealDelay]="250">
+          <span class="label">Material</span>
+          <span class="value">{{ prod.material }}</span>
+        </div>
+
+        <p class="product-info__desc" appScrollReveal [revealDelay]="300">
+          {{ prod.description }}
+        </p>
+
+        @if (prod.tags && prod.tags.length > 0) {
+          <div class="product-info__tags" appScrollReveal [revealDelay]="380">
+            @for (tag of prod.tags; track tag) {
+              <span class="tag">{{ tag }}</span>
+            }
+          </div>
+        }
+
+        <div class="product-info__actions" appScrollReveal [revealDelay]="450">
+          <a routerLink="/customization" [queryParams]="{ item: prod.name }" class="btn-gold">
+            <span>Request This Style</span>
+          </a>
+          <a routerLink="/contact" class="btn-ghost">Ask a Question</a>
+        </div>
+
+        <div class="product-info__promise" appScrollReveal [revealDelay]="550">
+          <div class="promise-item">
+            <span class="promise-item__icon">✦</span>
+            <span>Handcrafted by master artisans</span>
+          </div>
+          <div class="promise-item">
+            <span class="promise-item__icon">✦</span>
+            <span>Ethically sourced materials</span>
+          </div>
+          <div class="promise-item">
+            <span class="promise-item__icon">✦</span>
+            <span>Certificate of authenticity included</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    @if (relatedProducts().length > 0) {
+      <section class="related">
+        <div class="related__header" appScrollReveal>
+          <span class="section-eyebrow">You May Also Love</span>
+          <h2>Similar Pieces</h2>
+          <div class="divider-gold"></div>
+        </div>
+        <div class="related__grid">
+          @for (p of relatedProducts(); track p._id; let i = $index) {
+            <app-product-card
+              [product]="p"
+              appScrollReveal [revealDelay]="i * 120">
+            </app-product-card>
+          }
+        </div>
+      </section>
+    }
+  </div>
+} @else {
+  <div class="loading-screen">
+    <div class="loading-screen__spinner"></div>
+    <p>Loading piece details…</p>
+  </div>
+}

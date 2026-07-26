@@ -1,0 +1,108 @@
+.page-hero {
+  height: 50vh;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  &__bg {
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.35);
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.3), rgba(10,10,10,0.6));
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+
+    h1 {
+      font-size: clamp(3rem, 7vw, 6rem);
+      color: var(--warm-ivory);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+    }
+  }
+}
+
+.filter-bar {
+  background: var(--deep-charcoal);
+  border-bottom: 1px solid rgba(201, 169, 110, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+  position: sticky;
+  top: 72px;
+  z-index: 100;
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.filter-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 1.2rem 2rem;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--warm-ivory);
+    border-bottom-color: rgba(201, 169, 110, 0.4);
+  }
+
+  &.active {
+    color: var(--antique-gold);
+    border-bottom-color: var(--antique-gold);
+  }
+}
+
+.products-section {
+  background: var(--obsidian);
+  padding: 5rem 3rem 8rem;
+
+  &__grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem;
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 6rem 0;
+    color: var(--ivory-dim);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .products-section__grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .products-section__grid { grid-template-columns: repeat(2, 1fr); }
+  .products-section { padding: 3rem 1.5rem 5rem; }
+}
+@media (max-width: 480px) {
+  .products-section__grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,298 @@
+.inquiry-hero {
+  height: 65vh;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  &__bg {
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.28);
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.2), rgba(10,10,10,0.65));
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 2rem;
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 7rem);
+      color: var(--warm-ivory);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      em {
+        font-style: italic;
+        color: var(--antique-gold);
+      }
+    }
+
+    p {
+      color: rgba(245, 240, 232, 0.65);
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      line-height: 1.9;
+    }
+  }
+}
+
+/* Process */
+.process {
+  background: var(--deep-charcoal);
+  padding: 7rem 3rem;
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 4rem;
+    h2 { color: var(--warm-ivory); }
+  }
+
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  &__step {
+    padding: 2rem;
+    border-top: 1px solid rgba(201, 169, 110, 0.2);
+
+    &-num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 300;
+      color: rgba(201, 169, 110, 0.25);
+      display: block;
+      margin-bottom: 1rem;
+      line-height: 1;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      color: var(--warm-ivory);
+      margin-bottom: 0.8rem;
+      font-weight: 400;
+    }
+
+    p {
+      color: var(--ivory-dim);
+      font-size: 0.82rem;
+      line-height: 1.8;
+    }
+  }
+}
+
+/* Inquiry Form Section */
+.inquiry-form-section {
+  background: var(--obsidian);
+  padding: 7rem 3rem;
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  &__info {
+    h2 { color: var(--warm-ivory); margin-bottom: 1rem; }
+    p { color: var(--ivory-dim); font-size: 0.88rem; line-height: 1.9; margin-bottom: 2.5rem; }
+  }
+
+  &__contact-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(201, 169, 110, 0.12);
+  }
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+
+  &__icon {
+    color: var(--antique-gold);
+    font-size: 0.6rem;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+
+    strong {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--warm-ivory);
+      letter-spacing: 0.05em;
+    }
+
+    span {
+      font-size: 0.78rem;
+      color: var(--ivory-dim);
+    }
+  }
+}
+
+/* Form */
+.inquiry-form {
+  background: var(--deep-charcoal);
+  border: 1px solid rgba(201, 169, 110, 0.12);
+  padding: 3rem;
+
+  &__success {
+    text-align: center;
+    padding: 3rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+
+    .success-icon {
+      color: var(--antique-gold);
+      font-size: 2rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      color: var(--warm-ivory);
+      font-weight: 400;
+    }
+
+    p {
+      color: var(--ivory-dim);
+      font-size: 0.88rem;
+      line-height: 1.8;
+      max-width: 360px;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--antique-gold);
+  }
+
+  input, select, textarea {
+    background: rgba(10, 10, 10, 0.5);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    padding: 0.9rem 1.2rem;
+    color: var(--warm-ivory);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    outline: none;
+    transition: border-color 0.3s ease;
+    width: 100%;
+    appearance: none;
+
+    &::placeholder { color: rgba(200, 192, 176, 0.3); }
+    &:focus { border-color: var(--antique-gold); }
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A96E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+
+    option { background: var(--deep-charcoal); }
+  }
+
+  textarea { resize: vertical; min-height: 140px; }
+
+  &--checkbox {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      accent-color: var(--antique-gold);
+      margin-top: 2px;
+    }
+
+    label {
+      font-size: 0.75rem;
+      text-transform: none;
+      letter-spacing: 0.03em;
+      color: var(--ivory-dim);
+      line-height: 1.6;
+    }
+  }
+}
+
+.btn-submit {
+  width: 100%;
+  justify-content: center;
+  padding: 1rem 2rem !important;
+  font-size: 0.7rem !important;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    &:hover::before { transform: scaleX(0) !important; }
+    &:hover { color: var(--antique-gold) !important; }
+  }
+}
+
+@media (max-width: 1000px) {
+  .inquiry-form-section__inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .process__steps { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .process, .inquiry-form-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .inquiry-form { padding: 2rem 1.5rem; }
+  .process__steps { grid-template-columns: 1fr; }
+}
