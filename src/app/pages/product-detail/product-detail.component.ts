@@ -4,11 +4,12 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../interfaces/product.interface';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
+import { SafeCustomHtmlPipe } from '../../shared/pipes/safe-custom-html.pipe';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [RouterLink, ProductCardComponent, ScrollRevealDirective],
+  imports: [RouterLink, ProductCardComponent, ScrollRevealDirective, SafeCustomHtmlPipe],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })

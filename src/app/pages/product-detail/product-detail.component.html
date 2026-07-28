@@ -47,9 +47,8 @@
           <span class="value">{{ prod.material }}</span>
         </div>
 
-        <p class="product-info__desc" appScrollReveal [revealDelay]="300">
-          {{ prod.description }}
-        </p>
+        <div class="product-info__desc" [innerHTML]="prod.description | safeCustomHtml" appScrollReveal [revealDelay]="300">
+        </div>
 
         @if (prod.tags && prod.tags.length > 0) {
           <div class="product-info__tags" appScrollReveal [revealDelay]="380">
