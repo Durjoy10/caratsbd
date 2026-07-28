@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,6 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 })
 export class AppComponent {
   title = 'carats';
+  // Inject ThemeService to ensure it initializes on app startup
+  private themeService = inject(ThemeService);
 }

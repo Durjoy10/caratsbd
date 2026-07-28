@@ -15,7 +15,7 @@
   &__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(10,10,10,0.2), rgba(10,10,10,0.65));
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.65));
   }
 
   &__content {
@@ -26,12 +26,12 @@
 
     h1 {
       font-size: clamp(3rem, 8vw, 7rem);
-      color: var(--warm-ivory);
+      color: #F5F0E8; /* Always light on hero image */
       font-weight: 300;
       margin-bottom: 1.5rem;
       em {
         font-style: italic;
-        color: var(--antique-gold);
+        color: #C9A96E; /* Always gold on hero image */
       }
     }
 
@@ -46,7 +46,7 @@
 
 /* Process */
 .process {
-  background: var(--deep-charcoal);
+  background: var(--clr-surface);
   padding: 7rem 3rem;
 
   &__inner {
@@ -57,7 +57,7 @@
   &__header {
     text-align: center;
     margin-bottom: 4rem;
-    h2 { color: var(--warm-ivory); }
+    h2 { color: var(--clr-cream); }
   }
 
   &__steps {
@@ -68,13 +68,14 @@
 
   &__step {
     padding: 2rem;
-    border-top: 1px solid rgba(201, 169, 110, 0.2);
+    border-top: 1px solid var(--gold-border-alpha);
 
     &-num {
       font-family: var(--font-display);
       font-size: 3rem;
       font-weight: 300;
-      color: rgba(201, 169, 110, 0.25);
+      color: var(--clr-gold);
+      opacity: 0.3;
       display: block;
       margin-bottom: 1rem;
       line-height: 1;
@@ -82,13 +83,13 @@
 
     h3 {
       font-size: 1.1rem;
-      color: var(--warm-ivory);
+      color: var(--clr-cream);
       margin-bottom: 0.8rem;
       font-weight: 400;
     }
 
     p {
-      color: var(--ivory-dim);
+      color: var(--clr-muted);
       font-size: 0.82rem;
       line-height: 1.8;
     }
@@ -97,7 +98,7 @@
 
 /* Inquiry Form Section */
 .inquiry-form-section {
-  background: var(--obsidian);
+  background: var(--clr-bg);
   padding: 7rem 3rem;
 
   &__inner {
@@ -110,8 +111,8 @@
   }
 
   &__info {
-    h2 { color: var(--warm-ivory); margin-bottom: 1rem; }
-    p { color: var(--ivory-dim); font-size: 0.88rem; line-height: 1.9; margin-bottom: 2.5rem; }
+    h2 { color: var(--clr-cream); margin-bottom: 1rem; }
+    p { color: var(--clr-muted); font-size: 0.88rem; line-height: 1.9; margin-bottom: 2.5rem; }
   }
 
   &__contact-items {
@@ -119,7 +120,7 @@
     flex-direction: column;
     gap: 1.5rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(201, 169, 110, 0.12);
+    border-top: 1px solid var(--gold-border-alpha);
   }
 }
 
@@ -129,7 +130,7 @@
   gap: 1rem;
 
   &__icon {
-    color: var(--antique-gold);
+    color: var(--clr-gold);
     font-size: 0.6rem;
     margin-top: 4px;
     flex-shrink: 0;
@@ -144,21 +145,21 @@
       font-family: var(--font-body);
       font-size: 0.75rem;
       font-weight: 500;
-      color: var(--warm-ivory);
+      color: var(--clr-cream);
       letter-spacing: 0.05em;
     }
 
     span {
       font-size: 0.78rem;
-      color: var(--ivory-dim);
+      color: var(--clr-muted);
     }
   }
 }
 
 /* Form */
 .inquiry-form {
-  background: var(--deep-charcoal);
-  border: 1px solid rgba(201, 169, 110, 0.12);
+  background: var(--clr-surface);
+  border: 1px solid var(--gold-border-alpha);
   padding: 3rem;
 
   &__success {
@@ -170,18 +171,18 @@
     gap: 1.2rem;
 
     .success-icon {
-      color: var(--antique-gold);
+      color: var(--clr-gold);
       font-size: 2rem;
     }
 
     h3 {
       font-size: 1.5rem;
-      color: var(--warm-ivory);
+      color: var(--clr-cream);
       font-weight: 400;
     }
 
     p {
-      color: var(--ivory-dim);
+      color: var(--clr-muted);
       font-size: 0.88rem;
       line-height: 1.8;
       max-width: 360px;
@@ -212,14 +213,14 @@
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--antique-gold);
+    color: var(--clr-gold);
   }
 
   input, select, textarea {
-    background: rgba(10, 10, 10, 0.5);
-    border: 1px solid rgba(201, 169, 110, 0.2);
+    background: var(--input-bg);
+    border: 1px solid var(--gold-border-alpha);
     padding: 0.9rem 1.2rem;
-    color: var(--warm-ivory);
+    color: var(--clr-cream);
     font-family: var(--font-body);
     font-size: 0.88rem;
     font-weight: 300;
@@ -229,8 +230,8 @@
     width: 100%;
     appearance: none;
 
-    &::placeholder { color: rgba(200, 192, 176, 0.3); }
-    &:focus { border-color: var(--antique-gold); }
+    &::placeholder { color: var(--placeholder-clr); }
+    &:focus { border-color: var(--clr-gold); }
   }
 
   select {
@@ -240,7 +241,7 @@
     padding-right: 2.5rem;
     cursor: pointer;
 
-    option { background: var(--deep-charcoal); }
+    option { background: var(--clr-surface); color: var(--clr-cream); }
   }
 
   textarea { resize: vertical; min-height: 140px; }
@@ -254,7 +255,7 @@
       width: 16px;
       height: 16px;
       min-width: 16px;
-      accent-color: var(--antique-gold);
+      accent-color: var(--clr-gold);
       margin-top: 2px;
     }
 
@@ -262,7 +263,7 @@
       font-size: 0.75rem;
       text-transform: none;
       letter-spacing: 0.03em;
-      color: var(--ivory-dim);
+      color: var(--clr-muted);
       line-height: 1.6;
     }
   }
@@ -278,7 +279,7 @@
     opacity: 0.4;
     cursor: not-allowed;
     &:hover::before { transform: scaleX(0) !important; }
-    &:hover { color: var(--antique-gold) !important; }
+    &:hover { color: var(--clr-gold) !important; }
   }
 }
 

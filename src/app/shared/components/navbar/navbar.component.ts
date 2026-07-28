@@ -1,6 +1,7 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, HostListener, signal, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CATEGORIES } from '../../../enum/category.enum';
+import { ThemeService } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,9 +11,12 @@ import { CATEGORIES } from '../../../enum/category.enum';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
+  private themeService = inject(ThemeService);
+
   readonly scrolled = signal(false);
   readonly menuOpen = signal(false);
   readonly categories = CATEGORIES;
+  readonly isDark = this.themeService.isDark;
 
   @HostListener('window:scroll')
   onScroll(): void {
@@ -25,5 +29,9 @@ export class NavbarComponent {
 
   closeMenu(): void {
     this.menuOpen.set(false);
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggle();
   }
 }

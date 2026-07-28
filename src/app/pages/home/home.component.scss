@@ -20,9 +20,9 @@
     inset: 0;
     background: linear-gradient(
       to right,
-      rgba(10,10,10,0.95) 0%,
-      rgba(10,10,10,0.7) 50%,
-      rgba(10,10,10,0.3) 100%
+      var(--overlay-heavy) 0%,
+      var(--overlay-medium) 50%,
+      var(--overlay-light) 100%
     );
   }
 
@@ -225,12 +225,12 @@
   &__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 60%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 60%);
     transition: background 0.4s;
   }
 
   &:hover &__img { transform: scale(1.08); }
-  &:hover &__overlay { background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.2) 60%); }
+  &:hover &__overlay { background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.15) 60%); }
 
   &__body {
     padding: 16px 0 0;
@@ -323,7 +323,7 @@
     font-size: clamp(24px, 4vw, 44px);
     font-weight: 300;
     font-style: italic;
-    color: var(--clr-cream);
+    color: #F5F0E8; /* Always light text on dark image */
     line-height: 1.4;
     margin-bottom: 24px;
   }

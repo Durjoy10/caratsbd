@@ -1,7 +1,49 @@
 /* ===== CARATS — GLOBAL STYLES ===== */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap');
 
+/* ===== LIGHT THEME (DEFAULT) ===== */
 :root {
+  --clr-bg:        #FAFAF7;
+  --clr-surface:   #F0ECE4;
+  --clr-card:      #FFFFFF;
+  --clr-gold:      #A8873A;
+  --clr-gold-dim:  #C4A265;
+  --clr-gold-pale: #F5E8CE;
+  --clr-cream:     #1A1A1A;
+  --clr-muted:     #6B6560;
+  --clr-border:    #E0D8CC;
+
+  /* Aliases for legacy component SCSS files */
+  --warm-ivory:    #1A1A1A;
+  --ivory-dim:     #4A4540;
+  --antique-gold:  #A8873A;
+  --muted-gold:    #9A7E45;
+  --deep-charcoal: #F0ECE4;
+  --obsidian:      #FAFAF7;
+  --warm-dark:     #FFFFFF;
+  --font-display:  'Cormorant Garamond', Georgia, serif;
+  --font-body:     'Jost', sans-serif;
+
+  --ff-display: 'Cormorant Garamond', Georgia, serif;
+  --ff-body:    'Jost', sans-serif;
+  --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-slow: 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Theme-aware overlay colors */
+  --overlay-heavy: rgba(255, 255, 255, 0.95);
+  --overlay-medium: rgba(255, 255, 255, 0.7);
+  --overlay-light: rgba(255, 255, 255, 0.3);
+  --shadow-card: rgba(0, 0, 0, 0.06);
+  --shadow-dropdown: rgba(0, 0, 0, 0.12);
+  --gold-border-alpha: rgba(168, 135, 58, 0.2);
+  --gold-border-alpha-strong: rgba(168, 135, 58, 0.35);
+  --text-secondary: #7A756E;
+  --input-bg: rgba(240, 236, 228, 0.6);
+  --placeholder-clr: rgba(100, 95, 85, 0.4);
+}
+
+/* ===== DARK THEME ===== */
+[data-theme="dark"] {
   --clr-bg:        #0A0A0A;
   --clr-surface:   #111111;
   --clr-card:      #161616;
@@ -20,18 +62,27 @@
   --deep-charcoal: #141414;
   --obsidian:      #0A0A0A;
   --warm-dark:     #161616;
-  --font-display:  'Cormorant Garamond', Georgia, serif;
-  --font-body:     'Jost', sans-serif;
 
-  --ff-display: 'Cormorant Garamond', Georgia, serif;
-  --ff-body:    'Jost', sans-serif;
-  --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --transition-slow: 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Theme-aware overlay colors */
+  --overlay-heavy: rgba(10, 10, 10, 0.95);
+  --overlay-medium: rgba(10, 10, 10, 0.7);
+  --overlay-light: rgba(10, 10, 10, 0.3);
+  --shadow-card: rgba(0, 0, 0, 0.85);
+  --shadow-dropdown: rgba(0, 0, 0, 0.85);
+  --gold-border-alpha: rgba(201, 169, 110, 0.2);
+  --gold-border-alpha-strong: rgba(201, 169, 110, 0.35);
+  --text-secondary: #C8C2B4;
+  --input-bg: rgba(10, 10, 10, 0.5);
+  --placeholder-clr: rgba(200, 192, 176, 0.3);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; font-size: 16px; }
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
 
 body {
   background-color: var(--clr-bg);
@@ -41,6 +92,18 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* On pages with a dark image hero banner in light mode, un-scrolled transparent navbar needs light text */
+:root:not([data-theme="dark"]) {
+  body:has(.inquiry-hero, .contact-hero, .cat-hero, .page-hero) .navbar:not(.navbar--scrolled) {
+    .navbar__logo-text { color: #F5F0E8; }
+    .navbar__link { color: rgba(245, 240, 232, 0.75); }
+    .navbar__link:hover, .navbar__link.active { color: #F5F0E8; }
+    .theme-toggle:not(.theme-toggle--mobile) { border-color: rgba(245, 240, 232, 0.3); color: #F5F0E8; }
+    .navbar__hamburger span { background: #F5F0E8; }
+  }
 }
 
 a { text-decoration: none; color: inherit; }
@@ -70,6 +133,38 @@ ul { list-style: none; }
 }
 .gold-line--left { margin: 24px 0; }
 
+/* Section eyebrow used by many pages */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--ff-body);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--clr-gold);
+
+  &::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--clr-gold);
+  }
+}
+
+/* Divider gold used by multiple pages */
+.divider-gold {
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: var(--clr-gold);
+  margin: 16px auto;
+
+  &--left { margin: 16px 0; }
+}
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(40px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -77,6 +172,23 @@ ul { list-style: none; }
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+/* Fade-in-up animation classes used by several pages */
+.fade-in-up {
+  animation: fadeUp 0.8s ease both;
+  &.delay-2 { animation-delay: 0.2s; }
+  &.delay-3 { animation-delay: 0.4s; }
+}
+
+/* Parallax container shared styles */
+.parallax-container {
+  position: relative;
+  overflow: hidden;
+}
+.parallax-bg {
+  position: absolute;
+  inset: 0;
 }
 
 .eyebrow {
@@ -99,16 +211,58 @@ ul { list-style: none; }
   }
 }
 
+/* Primary Button — Solid Gold Fill */
 .btn-gold {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 36px;
+  background: var(--clr-gold);
+  border: 1px solid var(--clr-gold);
+  color: #FFFFFF;
+  font-family: var(--ff-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(168, 135, 58, 0.25);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.15);
+    transform: translateX(-101%);
+    transition: var(--transition);
+    z-index: 0;
+  }
+
+  span { position: relative; z-index: 1; }
+
+  &:hover {
+    color: #FFFFFF;
+    box-shadow: 0 6px 20px rgba(168, 135, 58, 0.4);
+    &::before { transform: translateX(0); }
+  }
+}
+
+/* Secondary Button — Gold Outline with Slide Fill on Hover */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 14px 36px;
   border: 1px solid var(--clr-gold);
   color: var(--clr-gold);
   font-family: var(--ff-body);
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 3px;
   text-transform: uppercase;
   transition: var(--transition);
@@ -130,29 +284,8 @@ ul { list-style: none; }
   span { position: relative; z-index: 1; }
 
   &:hover {
-    color: var(--clr-bg);
+    color: #FFFFFF;
     &::before { transform: translateX(0); }
-  }
-}
-
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 32px;
-  border: 1px solid var(--clr-border);
-  color: var(--clr-muted);
-  font-family: var(--ff-body);
-  font-size: 11px;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  transition: var(--transition);
-  background: transparent;
-  cursor: pointer;
-
-  &:hover {
-    border-color: var(--clr-gold);
-    color: var(--clr-gold);
   }
 }
 
