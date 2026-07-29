@@ -8,7 +8,7 @@
     <div class="cat-hero__content">
       <span class="section-eyebrow fade-in-up">Collection</span>
       <h1 class="fade-in-up delay-2">{{ cat.name }}</h1>
-      <p class="fade-in-up delay-3">{{ cat.description }}</p>
+      <div class="cat-hero__desc fade-in-up delay-3" [innerHTML]="cat.description | safeCustomHtml"></div>
     </div>
   </section>
 }

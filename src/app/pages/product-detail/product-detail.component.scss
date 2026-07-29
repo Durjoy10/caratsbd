@@ -111,8 +111,16 @@
 .product-info {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.8rem;
   padding-top: 1rem;
+
+  &__badges {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.4rem;
+  }
 
   &__category {
     font-family: var(--font-body);
@@ -120,8 +128,7 @@
     letter-spacing: 0.35em;
     text-transform: uppercase;
     color: var(--clr-gold);
-    display: block;
-    margin-bottom: 0.8rem;
+    display: inline-block;
     transition: opacity 0.3s ease;
     &:hover { opacity: 0.7; }
   }
@@ -135,27 +142,20 @@
     margin-bottom: 0;
   }
 
-  &__material {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    padding: 1.2rem 0;
-    border-top: 1px solid var(--gold-border-alpha);
-    border-bottom: 1px solid var(--gold-border-alpha);
+  &__price-box {
+    margin-top: 0.6rem;
+  }
 
-    .label {
-      font-family: var(--font-body);
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--clr-gold);
-    }
+  &__price {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--clr-gold);
 
-    .value {
-      font-family: var(--font-display);
+    &--inquiry {
       font-size: 1.1rem;
-      color: var(--clr-cream);
       font-style: italic;
+      color: var(--clr-muted);
     }
   }
 
@@ -183,14 +183,87 @@
     flex-direction: column;
     gap: 0.8rem;
     padding-top: 1.5rem;
-    border-top: 1px solid var(--clr-border);
+    border-top: 1px solid var(--clr-border, rgba(255,255,255,0.1));
   }
+}
+
+.product-specs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--gold-border-alpha, rgba(201, 169, 110, 0.2));
+  border-bottom: 1px solid var(--gold-border-alpha, rgba(201, 169, 110, 0.2));
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.spec-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  &__label {
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--clr-gold);
+  }
+
+  &__val {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--clr-cream);
+    font-weight: 500;
+
+    &.text-gold { color: var(--clr-gold); }
+    &.text-green { color: #10b981; }
+    &.text-red { color: #ef4444; }
+  }
+}
+
+.badge-gold {
+  background: rgba(9,72,40,0.15);
+  color: var(--clr-gold, #094828);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.badge-outline {
+  border: 1px solid rgba(201, 169, 110, 0.4);
+  color: var(--clr-muted, #949F98);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+
+.badge-featured {
+  background: linear-gradient(135deg, var(--clr-gold-dim), var(--clr-gold));
+  color: #FFFFFF;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  font-weight: 600;
 }
 
 .tag {
   display: inline-block;
   padding: 0.3rem 0.9rem;
-  border: 1px solid var(--gold-border-alpha-strong);
+  border: 1px solid var(--gold-border-alpha-strong, rgba(201, 169, 110, 0.4));
   font-family: var(--font-body);
   font-size: 0.6rem;
   letter-spacing: 0.2em;
@@ -218,7 +291,7 @@
 .related {
   background: var(--clr-surface);
   padding: 6rem 3rem;
-  border-top: 1px solid var(--gold-border-alpha);
+  border-top: 1px solid var(--gold-border-alpha, rgba(201, 169, 110, 0.2));
 
   &__header {
     text-align: center;
@@ -256,7 +329,7 @@
   &__spinner {
     width: 36px;
     height: 36px;
-    border: 1px solid var(--gold-border-alpha);
+    border: 1px solid var(--gold-border-alpha, rgba(201, 169, 110, 0.2));
     border-top-color: var(--clr-gold);
     border-radius: 50%;
     animation: spin 0.9s linear infinite;
@@ -275,6 +348,7 @@
   .product-gallery { position: static; }
   .related__grid { grid-template-columns: repeat(2, 1fr); }
 }
+
 @media (max-width: 600px) {
   .product-detail__body,
   .product-detail__back,

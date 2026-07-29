@@ -12,7 +12,7 @@
 
 <!-- Filter Bar -->
 <div class="filter-bar">
-  @for (cat of filterOptions; track cat.value) {
+  @for (cat of filterOptions(); track cat.value) {
     <button
       class="filter-btn"
       [class.active]="activeFilter() === cat.value"

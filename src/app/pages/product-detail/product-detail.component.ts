@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../interfaces/product.interface';
@@ -9,7 +10,7 @@ import { SafeCustomHtmlPipe } from '../../shared/pipes/safe-custom-html.pipe';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [RouterLink, ProductCardComponent, ScrollRevealDirective, SafeCustomHtmlPipe],
+  imports: [RouterLink, DecimalPipe, ProductCardComponent, ScrollRevealDirective, SafeCustomHtmlPipe],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })

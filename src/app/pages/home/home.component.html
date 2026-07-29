@@ -1,30 +1,35 @@
-<!-- HERO SECTION -->
+<!-- HERO SECTION (HOME BANNER 1 & BACKGROUND) -->
 <section class="hero">
-  <div class="hero__bg" [style.transform]="heroParallax()">
+  <div class="hero__bg" [style.transform]="heroParallax()"
+    [style.background-image]="'radial-gradient(ellipse 80% 60% at 70% 50%, rgba(9,72,40,0.06) 0%, transparent 60%), url(' + (shopInfo()?.heroBgImage || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1800&q=70') + ')'">
     <div class="hero__gradient"></div>
   </div>
 
   <div class="hero__content container">
     <div class="hero__left">
-      <span class="eyebrow">Est. 2012 — Dhaka, Bangladesh</span>
+      <span class="eyebrow">{{ shopInfo()?.heroEyebrow || 'Est. 2012 — Dhaka, Bangladesh' }}</span>
       <h1 class="hero__title">
-        <em>Where Gold</em><br>
-        Meets Grace
+        <em>{{ shopInfo()?.heroTitleLine1 || 'Where Gold' }}</em><br>
+        {{ shopInfo()?.heroTitleLine2 || 'Meets Grace' }}
       </h1>
-      <p class="hero__subtitle">
-        Handcrafted fine jewellery for those who believe elegance is not worn — it is lived.
-      </p>
+      <div class="hero__subtitle"
+        [innerHTML]="(shopInfo()?.heroSubtitle || 'Handcrafted fine jewellery for those who believe elegance is not worn — it is lived.') | safeCustomHtml">
+      </div>
       <div class="hero__actions">
-        <a routerLink="/category/rings" class="btn-gold"><span>Explore Collections</span></a>
-        <a routerLink="/customization" class="btn-ghost"><span>Custom Orders</span></a>
+        <a [routerLink]="shopInfo()?.heroButton1Link || '/category/rings'" class="btn-gold">
+          <span>{{ shopInfo()?.heroButton1Text || 'Explore Collections' }}</span>
+        </a>
+        <a [routerLink]="shopInfo()?.heroButton2Link || '/customization'" class="btn-ghost">
+          <span>{{ shopInfo()?.heroButton2Text || 'Custom Orders' }}</span>
+        </a>
       </div>
     </div>
 
     <div class="hero__right">
       <div class="hero__img-frame">
-        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=85"
-             alt="Featured jewellery piece"
-             class="hero__img" />
+        <img
+          [src]="shopInfo()?.heroBannerImage || 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=85'"
+          alt="Featured jewellery piece" class="hero__img" />
         <div class="hero__img-accent"></div>
       </div>
     </div>
@@ -36,26 +41,26 @@
   </div>
 </section>
 
-<!-- STATS MARQUEE -->
+<!-- STATS MARQUEE (DYNAMIC STATS TICKER) -->
 <section class="stats-bar">
   <div class="stats-bar__track">
-    @for (stat of stats; track stat.label; let i = $index) {
-      <div class="stats-bar__item">
-        <span class="stats-bar__value">{{ stat.value }}</span>
-        <span class="stats-bar__label">{{ stat.label }}</span>
-      </div>
+    @for (stat of stats(); track stat.label; let i = $index) {
+    <div class="stats-bar__item">
+      <span class="stats-bar__value">{{ stat.value }}</span>
+      <span class="stats-bar__label">{{ stat.label }}</span>
+    </div>
     }
     <!-- Duplicate for infinite scroll effect -->
-    @for (stat of stats; track 'dup-' + stat.label) {
-      <div class="stats-bar__item" aria-hidden="true">
-        <span class="stats-bar__value">{{ stat.value }}</span>
-        <span class="stats-bar__label">{{ stat.label }}</span>
-      </div>
+    @for (stat of stats(); track 'dup-' + stat.label + '-' + i; let i = $index) {
+    <div class="stats-bar__item" aria-hidden="true">
+      <span class="stats-bar__value">{{ stat.value }}</span>
+      <span class="stats-bar__label">{{ stat.label }}</span>
+    </div>
     }
   </div>
 </section>
 
-<!-- CATEGORIES SECTION -->
+<!-- CATEGORIES SECTION (DYNAMIC CATEGORIES GRID) -->
 <section class="categories section-spacing">
   <div class="container">
     <div class="categories__header" appScrollReveal>
@@ -64,22 +69,18 @@
     </div>
 
     <div class="categories__grid">
-      @for (cat of categories; track cat.slug; let i = $index) {
-        <a [routerLink]="['/category', cat.slug]"
-           class="category-card"
-           appScrollReveal [revealDelay]="i * 100">
-          <div class="category-card__img-wrap">
-            <img [src]="'https://images.unsplash.com/photo-' + getCatImage(cat.slug) + '?w=600&q=80'"
-                 [alt]="cat.name"
-                 class="category-card__img" />
-            <div class="category-card__overlay"></div>
-          </div>
-          <div class="category-card__body">
-            <h3 class="category-card__name">{{ cat.name }}</h3>
-            <p class="category-card__desc">{{ cat.description }}</p>
-            <span class="category-card__link">Explore →</span>
-          </div>
-        </a>
+      @for (cat of categories(); track cat.slug; let i = $index) {
+      <a [routerLink]="['/category', cat.slug]" class="category-card" appScrollReveal [revealDelay]="i * 100">
+        <div class="category-card__img-wrap">
+          <img [src]="getCatImage(cat)" [alt]="cat.name" class="category-card__img" />
+          <div class="category-card__overlay"></div>
+        </div>
+        <div class="category-card__body">
+          <h3 class="category-card__name">{{ cat.name }}</h3>
+          <div class="category-card__desc" [innerHTML]="cat.description | safeCustomHtml"></div>
+          <span class="category-card__link">Explore →</span>
+        </div>
+      </a>
       }
     </div>
   </div>
@@ -96,23 +97,22 @@
 
     <div class="featured__grid">
       @for (product of featuredProducts(); track product._id; let i = $index) {
-        <app-product-card
-          [product]="product"
-          [index]="i"
-          appScrollReveal [revealDelay]="i * 80">
-        </app-product-card>
+      <app-product-card [product]="product" [index]="i" appScrollReveal [revealDelay]="i * 80">
+      </app-product-card>
       }
     </div>
 
     <div class="featured__footer" appScrollReveal>
-      <a routerLink="/category/rings" class="btn-ghost"><span>View All Collections</span></a>
+      <a routerLink="/products" class="btn-ghost"><span>View All Collections</span></a>
     </div>
   </div>
 </section>
 
-<!-- PARALLAX QUOTE SECTION -->
+<!-- PARALLAX QUOTE SECTION (PROMO BANNER 2 BACKGROUND) -->
 <section class="quote-parallax">
-  <div class="quote-parallax__bg"></div>
+  <div class="quote-parallax__bg"
+    [style.background-image]="'url(' + (shopInfo()?.promoBgImage || 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1600&q=60') + ')'">
+  </div>
   <div class="quote-parallax__content container">
     <blockquote class="quote-parallax__text" appScrollReveal>
       <em>"Jewellery is the most transformative thing you can wear."</em>
@@ -121,23 +121,26 @@
   </div>
 </section>
 
-<!-- CRAFT STORY SECTION -->
+<!-- CRAFT STORY SECTION (HOME BANNER 2 FOREGROUND) -->
 <section class="craft section-spacing">
   <div class="container craft__inner">
     <div class="craft__visual" appScrollReveal>
-      <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=700&q=80"
-           alt="Jewellery craftsmanship" class="craft__img" />
+      <img
+        [src]="shopInfo()?.promoBannerImage || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=700&q=80'"
+        alt="Jewellery craftsmanship" class="craft__img" />
       <div class="craft__img-bg"></div>
     </div>
 
     <div class="craft__content" appScrollReveal [revealDelay]="200">
-      <span class="eyebrow">Our Story</span>
-      <h2 class="craft__title">Tradition Meets Modern Elegance</h2>
-      <p class="craft__body">
-        For over a decade, Carats has been crafting fine jewellery that honours Bangladesh's rich goldsmithing heritage while embracing contemporary design. Every piece passes through the hands of our master artisans — each stroke deliberate, each stone chosen with care.
-      </p>
+      <span class="eyebrow">{{ shopInfo()?.promoEyebrow || 'Our Story' }}</span>
+      <h2 class="craft__title">{{ shopInfo()?.promoTitle || 'Tradition Meets Modern Elegance' }}</h2>
+      <div class="craft__body"
+        [innerHTML]="(shopInfo()?.promoSubtitle || 'For over a decade, Carats has been crafting fine jewellery that honours Bangladesh\'s rich goldsmithing heritage while embracing contemporary design.') | safeCustomHtml">
+      </div>
       <div class="gold-line--left gold-line" style="margin: 28px 0;"></div>
-      <a routerLink="/customization" class="btn-gold"><span>Commission a Piece</span></a>
+      <a [routerLink]="shopInfo()?.promoButtonLink || '/customization'" class="btn-gold">
+        <span>{{ shopInfo()?.promoButtonText || 'Commission a Piece' }}</span>
+      </a>
     </div>
   </div>
 </section>

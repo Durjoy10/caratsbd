@@ -1,7 +1,7 @@
 @if (product(); as prod) {
   <div class="product-detail">
 
-    <!-- Back -->
+    <!-- Back Button -->
     <div class="product-detail__back">
       <button (click)="goBack()" class="back-btn">
         <span class="back-btn__arrow">←</span>
@@ -12,13 +12,13 @@
     <!-- Main Content -->
     <div class="product-detail__body">
 
-      <!-- Gallery -->
+      <!-- Left: Image Gallery -->
       <div class="product-gallery" appScrollReveal>
         <div class="product-gallery__main">
           <img [src]="activeImage()" [alt]="prod.name" class="product-gallery__img" />
           <div class="product-gallery__zoom-hint">Hover to explore</div>
         </div>
-        @if (prod.images.length > 1) {
+        @if (prod.images && prod.images.length > 1) {
           <div class="product-gallery__thumbs">
             @for (img of prod.images; track img) {
               <button
@@ -32,32 +32,98 @@
         }
       </div>
 
-      <!-- Info -->
+      <!-- Right: Detailed Specifications & Info -->
       <div class="product-info">
+        
+        <!-- Header & Category Meta Badges -->
         <div appScrollReveal [revealDelay]="150">
-          <a [routerLink]="['/category', prod.categorySlug || prod.category.toLowerCase()]" class="product-info__category">
-            {{ prod.category }}
-          </a>
+          <div class="product-info__badges">
+            <a [routerLink]="['/category', prod.categorySlug || prod.category.toLowerCase()]" class="product-info__category">
+              {{ prod.category }}
+            </a>
+
+            @if (prod.catalogNumber) {
+              <span class="badge-gold">CAT #{{ prod.catalogNumber }}</span>
+            }
+            @if (prod.bagNo) {
+              <span class="badge-outline">Bag: {{ prod.bagNo }}</span>
+            }
+            @if (prod.styleCode) {
+              <span class="badge-outline">Style: {{ prod.styleCode }}</span>
+            }
+            @if (prod.featured) {
+              <span class="badge-featured">★ Featured Piece</span>
+            }
+          </div>
+
           <h1 class="product-info__name">{{ prod.name }}</h1>
+
+          <!-- Price Display -->
+          <div class="product-info__price-box">
+            @if (prod.price && prod.price > 0) {
+              <span class="product-info__price">৳ {{ prod.price | number }}</span>
+            } @else {
+              <span class="product-info__price product-info__price--inquiry">Price Available on Inquiry</span>
+            }
+          </div>
+
           <div class="divider-gold divider-gold--left"></div>
         </div>
 
-        <div class="product-info__material" appScrollReveal [revealDelay]="250">
-          <span class="label">Material</span>
-          <span class="value">{{ prod.material }}</span>
+        <!-- Specifications Grid Cards (All Admin Fields) -->
+        <div class="product-specs" appScrollReveal [revealDelay]="250">
+          <div class="spec-card">
+            <span class="spec-card__label">Metal Composition</span>
+            <strong class="spec-card__val">{{ prod.baseMetal || prod.material || '18K Gold' }}</strong>
+          </div>
+
+          @if (prod.grossWeight || prod.weight) {
+            <div class="spec-card">
+              <span class="spec-card__label">Gross Weight</span>
+              <strong class="spec-card__val">{{ prod.grossWeight ? (prod.grossWeight + ' g') : prod.weight }}</strong>
+            </div>
+          }
+
+          @if (prod.diamondWeight) {
+            <div class="spec-card">
+              <span class="spec-card__label">Diamond Weight</span>
+              <strong class="spec-card__val text-gold">{{ prod.diamondWeight }} CT</strong>
+            </div>
+          }
+
+          @if (prod.stockQuantity !== undefined && prod.stockQuantity !== null) {
+            <div class="spec-card">
+              <span class="spec-card__label">Stock Status</span>
+              <strong class="spec-card__val" [class.text-green]="prod.stockQuantity > 0" [class.text-red]="prod.stockQuantity <= 0">
+                {{ prod.stockQuantity > 0 ? (prod.stockQuantity + ' Available in Stock') : 'Special Order' }}
+              </strong>
+            </div>
+          }
+
+          @if (prod.catalogPage) {
+            <div class="spec-card">
+              <span class="spec-card__label">Catalog Page</span>
+              <strong class="spec-card__val">Page {{ prod.catalogPage }}</strong>
+            </div>
+          }
         </div>
 
-        <div class="product-info__desc" [innerHTML]="prod.description | safeCustomHtml" appScrollReveal [revealDelay]="300">
-        </div>
+        <!-- E-Commerce Description -->
+        @if (prod.description) {
+          <div class="product-info__desc" [innerHTML]="prod.description | safeCustomHtml" appScrollReveal [revealDelay]="300">
+          </div>
+        }
 
+        <!-- Tags -->
         @if (prod.tags && prod.tags.length > 0) {
           <div class="product-info__tags" appScrollReveal [revealDelay]="380">
             @for (tag of prod.tags; track tag) {
-              <span class="tag">{{ tag }}</span>
+              <span class="tag">#{{ tag }}</span>
             }
           </div>
         }
 
+        <!-- Action Buttons -->
         <div class="product-info__actions" appScrollReveal [revealDelay]="450">
           <a routerLink="/customization" [queryParams]="{ item: prod.name }" class="btn-gold">
             <span>Request This Style</span>
@@ -65,20 +131,22 @@
           <a routerLink="/contact" class="btn-ghost">Ask a Question</a>
         </div>
 
+        <!-- Brand Guarantees -->
         <div class="product-info__promise" appScrollReveal [revealDelay]="550">
           <div class="promise-item">
             <span class="promise-item__icon">✦</span>
-            <span>Handcrafted by master artisans</span>
+            <span>Handcrafted by master artisans in Bangladesh</span>
           </div>
           <div class="promise-item">
             <span class="promise-item__icon">✦</span>
-            <span>Ethically sourced materials</span>
+            <span>Ethically sourced pure gold & certified diamonds</span>
           </div>
           <div class="promise-item">
             <span class="promise-item__icon">✦</span>
-            <span>Certificate of authenticity included</span>
+            <span>Official Certificate of Authenticity included</span>
           </div>
         </div>
+
       </div>
     </div>
 

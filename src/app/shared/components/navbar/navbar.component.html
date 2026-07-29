@@ -2,8 +2,12 @@
   <div class="navbar__inner">
     <!-- Logo -->
     <a routerLink="/" class="navbar__logo" (click)="closeMenu()">
-      <span class="navbar__logo-text">CARATS</span>
-      <span class="navbar__logo-sub">Fine Jewellery</span>
+      @if (shopInfo()?.logoUrl) {
+        <img [src]="shopInfo()?.logoUrl" [alt]="shopInfo()?.name || 'Carats Fine Jewellery'" class="navbar__logo-img" />
+      } @else {
+        <span class="navbar__logo-text">CARATS</span>
+        <span class="navbar__logo-sub">Fine Jewellery</span>
+      }
     </a>
 
     <!-- Desktop Nav -->
@@ -12,7 +16,7 @@
       <div class="navbar__dropdown-wrap">
         <span class="navbar__link">Collections</span>
         <div class="navbar__dropdown">
-          @for (cat of categories; track cat.slug) {
+          @for (cat of categories(); track cat.slug) {
             <a [routerLink]="['/category', cat.slug]"
                class="navbar__dropdown-item"
                (click)="closeMenu()">
@@ -61,7 +65,7 @@
     <a routerLink="/" class="mobile-menu__link" (click)="closeMenu()">Home</a>
     <div class="mobile-menu__section">
       <span class="mobile-menu__label eyebrow">Collections</span>
-      @for (cat of categories; track cat.slug) {
+      @for (cat of categories(); track cat.slug) {
         <a [routerLink]="['/category', cat.slug]"
            class="mobile-menu__sub-link"
            (click)="closeMenu()">{{ cat.name }}</a>

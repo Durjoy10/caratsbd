@@ -1,5 +1,5 @@
 <article class="product-card"
-         [routerLink]="['/product', product().slug]"
+         [routerLink]="['/product', product().slug || product()._id]"
          (mouseenter)="hovered.set(true)"
          (mouseleave)="hovered.set(false)">
   <div class="product-card__image-wrap">

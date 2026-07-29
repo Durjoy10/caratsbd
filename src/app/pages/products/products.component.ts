@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../interfaces/product.interface';
+import { CategoryService } from '../../services/category.service';
+import { Product, Category } from '../../interfaces/product.interface';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 
@@ -13,8 +14,10 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
 })
 export class ProductsComponent implements OnInit {
   private productService = inject(ProductService);
+  private categoryService = inject(CategoryService);
 
   readonly allProducts = signal<Product[]>([]);
+  readonly categories = signal<Category[]>([]);
   readonly activeFilter = signal('all');
 
   readonly filteredProducts = computed(() => {
@@ -22,21 +25,33 @@ export class ProductsComponent implements OnInit {
     const list = this.allProducts();
     return filter === 'all'
       ? list
-      : list.filter(p => (p.categorySlug || p.category.toLowerCase()) === filter);
+      : list.filter(p => (p.categorySlug || p.category.toLowerCase()).replace(/[^a-z0-9]+/g, '-') === filter);
   });
 
-  readonly filterOptions = [
-    { label: 'All', value: 'all' },
-    { label: 'Rings', value: 'rings' },
-    { label: 'Necklaces', value: 'necklaces' },
-    { label: 'Bracelets', value: 'bracelets' },
-    { label: 'Chains', value: 'chains' },
-    { label: 'Earrings', value: 'earrings' }
-  ];
+  readonly filterOptions = computed(() => {
+    const cats = this.categories();
+    if (cats.length > 0) {
+      return [
+        { label: 'All', value: 'all' },
+        ...cats.map(c => ({ label: c.name, value: c.slug.toLowerCase() }))
+      ];
+    }
+    return [
+      { label: 'All', value: 'all' },
+      { label: 'Rings', value: 'rings' },
+      { label: 'Necklaces', value: 'necklaces' },
+      { label: 'Bracelets', value: 'bracelets' },
+      { label: 'Chains', value: 'chains' },
+      { label: 'Earrings', value: 'earrings' }
+    ];
+  });
 
   ngOnInit(): void {
     this.productService.getAllProducts().subscribe(products => {
       this.allProducts.set(products);
+    });
+    this.categoryService.getCategories().subscribe(cats => {
+      this.categories.set(cats);
     });
   }
 

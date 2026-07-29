@@ -1,24 +1,24 @@
 /* ===== CARATS — GLOBAL STYLES ===== */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap');
 
-/* ===== LIGHT THEME (DEFAULT) ===== */
+/* ===== LIGHT THEME (DEFAULT) — PRIMARY BRAND: #094828 (ROYAL EMERALD) ===== */
 :root {
   --clr-bg:        #FAFAF7;
-  --clr-surface:   #F0ECE4;
+  --clr-surface:   rgba(9, 72, 40, 0.08); /* #09482814 Soft Emerald Section Tint */
   --clr-card:      #FFFFFF;
-  --clr-gold:      #A8873A;
-  --clr-gold-dim:  #C4A265;
-  --clr-gold-pale: #F5E8CE;
+  --clr-gold:      #094828;       /* Primary Emerald Green */
+  --clr-gold-dim:  #0d5c35;       /* Medium Emerald Accent */
+  --clr-gold-pale: rgba(9, 72, 40, 0.08); /* #09482814 */
   --clr-cream:     #1A1A1A;
-  --clr-muted:     #6B6560;
-  --clr-border:    #E0D8CC;
+  --clr-muted:     #5E6862;
+  --clr-border:    #D5DEC8;
 
   /* Aliases for legacy component SCSS files */
   --warm-ivory:    #1A1A1A;
-  --ivory-dim:     #4A4540;
-  --antique-gold:  #A8873A;
-  --muted-gold:    #9A7E45;
-  --deep-charcoal: #F0ECE4;
+  --ivory-dim:     #3E4D43;
+  --antique-gold:  #094828;
+  --muted-gold:    #0d5c35;
+  --deep-charcoal: rgba(9, 72, 40, 0.08);
   --obsidian:      #FAFAF7;
   --warm-dark:     #FFFFFF;
   --font-display:  'Cormorant Garamond', Georgia, serif;
@@ -35,11 +35,11 @@
   --overlay-light: rgba(255, 255, 255, 0.3);
   --shadow-card: rgba(0, 0, 0, 0.06);
   --shadow-dropdown: rgba(0, 0, 0, 0.12);
-  --gold-border-alpha: rgba(168, 135, 58, 0.2);
-  --gold-border-alpha-strong: rgba(168, 135, 58, 0.35);
-  --text-secondary: #7A756E;
-  --input-bg: rgba(240, 236, 228, 0.6);
-  --placeholder-clr: rgba(100, 95, 85, 0.4);
+  --gold-border-alpha: rgba(9, 72, 40, 0.2);
+  --gold-border-alpha-strong: rgba(9, 72, 40, 0.35);
+  --text-secondary: #5E6862;
+  --input-bg: rgba(255, 255, 255, 0.85);
+  --placeholder-clr: rgba(80, 100, 88, 0.4);
 }
 
 /* ===== DARK THEME ===== */
@@ -47,18 +47,18 @@
   --clr-bg:        #0A0A0A;
   --clr-surface:   #111111;
   --clr-card:      #161616;
-  --clr-gold:      #C9A96E;
-  --clr-gold-dim:  #8B6F42;
-  --clr-gold-pale: #E8D5B0;
+  --clr-gold:      #159354;       /* Vibrant Emerald Green for Dark Mode */
+  --clr-gold-dim:  #094828;
+  --clr-gold-pale: #082C19;
   --clr-cream:     #F5F0E8;
-  --clr-muted:     #A8A296;
-  --clr-border:    #2A2A2A;
+  --clr-muted:     #9FB5A8;
+  --clr-border:    #1F3327;
 
   /* Aliases for legacy component SCSS files */
   --warm-ivory:    #F5F0E8;
-  --ivory-dim:     #D5CFC2;
-  --antique-gold:  #C9A96E;
-  --muted-gold:    #B89F70;
+  --ivory-dim:     #C5DDD0;
+  --antique-gold:  #159354;
+  --muted-gold:    #094828;
   --deep-charcoal: #141414;
   --obsidian:      #0A0A0A;
   --warm-dark:     #161616;
@@ -69,11 +69,11 @@
   --overlay-light: rgba(10, 10, 10, 0.3);
   --shadow-card: rgba(0, 0, 0, 0.85);
   --shadow-dropdown: rgba(0, 0, 0, 0.85);
-  --gold-border-alpha: rgba(201, 169, 110, 0.2);
-  --gold-border-alpha-strong: rgba(201, 169, 110, 0.35);
-  --text-secondary: #C8C2B4;
+  --gold-border-alpha: rgba(21, 147, 84, 0.2);
+  --gold-border-alpha-strong: rgba(21, 147, 84, 0.35);
+  --text-secondary: #B0C9BB;
   --input-bg: rgba(10, 10, 10, 0.5);
-  --placeholder-clr: rgba(200, 192, 176, 0.3);
+  --placeholder-clr: rgba(180, 200, 188, 0.3);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -211,7 +211,7 @@ ul { list-style: none; }
   }
 }
 
-/* Primary Button — Solid Gold Fill */
+/* Primary Button — Solid Emerald Fill */
 .btn-gold {
   display: inline-flex;
   align-items: center;
@@ -230,7 +230,7 @@ ul { list-style: none; }
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(168, 135, 58, 0.25);
+  box-shadow: 0 4px 15px rgba(9, 72, 40, 0.25);
 
   &::before {
     content: '';
@@ -246,12 +246,12 @@ ul { list-style: none; }
 
   &:hover {
     color: #FFFFFF;
-    box-shadow: 0 6px 20px rgba(168, 135, 58, 0.4);
+    box-shadow: 0 6px 20px rgba(9, 72, 40, 0.4);
     &::before { transform: translateX(0); }
   }
 }
 
-/* Secondary Button — Gold Outline with Slide Fill on Hover */
+/* Secondary Button — Emerald Outline with Slide Fill on Hover */
 .btn-ghost {
   display: inline-flex;
   align-items: center;

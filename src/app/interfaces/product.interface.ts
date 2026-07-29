@@ -1,13 +1,25 @@
 export interface Product {
   _id: string;
+  catalogNumber?: string;
+  catalogPage?: number;
+  bagNo?: string;
+  styleCode?: string;
   name: string;
+  title?: string;
   category: string;
+  categoryName?: string;
   categorySlug?: string;
   subcategory?: string;
   description: string;
   images: string[];
+  baseMetal?: string;
   material?: string;
+  grossWeight?: number;
+  diamondWeight?: number;
   weight?: string;
+  price?: number;
+  stockQuantity?: number;
+  isActive?: boolean;
   featured?: boolean;
   slug: string;
   tags?: string[];
@@ -23,6 +35,7 @@ export interface Category {
   coverImage?: string;
   productCount?: number;
   description?: string;
+  order?: number;
 }
 
 export interface InquiryForm {

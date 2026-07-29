@@ -1,7 +1,9 @@
-import { Component, HostListener, signal, inject } from '@angular/core';
+import { Component, HostListener, signal, inject, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { CATEGORIES } from '../../../enum/category.enum';
 import { ThemeService } from '../../../services/theme.service';
+import { ShopInfoService, ShopInfo } from '../../../services/shop-info.service';
+import { CategoryService } from '../../../services/category.service';
+import { Category } from '../../../interfaces/product.interface';
 
 @Component({
   selector: 'app-navbar',
@@ -10,13 +12,28 @@ import { ThemeService } from '../../../services/theme.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   private themeService = inject(ThemeService);
+  private shopInfoService = inject(ShopInfoService);
+  private categoryService = inject(CategoryService);
 
   readonly scrolled = signal(false);
   readonly menuOpen = signal(false);
-  readonly categories = CATEGORIES;
+  readonly categories = signal<Category[]>([]);
   readonly isDark = this.themeService.isDark;
+  readonly shopInfo = signal<ShopInfo | null>(null);
+
+  ngOnInit(): void {
+    this.shopInfoService.getShopInfo().subscribe({
+      next: (info) => this.shopInfo.set(info),
+      error: () => {}
+    });
+
+    this.categoryService.getCategories().subscribe({
+      next: (cats) => this.categories.set(cats),
+      error: () => {}
+    });
+  }
 
   @HostListener('window:scroll')
   onScroll(): void {

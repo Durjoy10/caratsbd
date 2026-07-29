@@ -12,6 +12,14 @@
 
   &__logo { display: flex; flex-direction: column; margin-bottom: 20px; }
 
+  &__logo-img {
+    max-height: 52px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 16px;
+  }
+
   &__logo-text {
     font-family: var(--ff-display);
     font-size: 28px;
