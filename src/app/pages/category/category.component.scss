@@ -157,9 +157,9 @@
   .cat-products__grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
-  .cat-products__grid { grid-template-columns: repeat(2, 1fr); }
-  .cat-products, .breadcrumb { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .cat-products__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .cat-products, .breadcrumb { padding-left: 1rem; padding-right: 1rem; }
 }
 @media (max-width: 480px) {
-  .cat-products__grid { grid-template-columns: 1fr; }
+  .cat-products__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }

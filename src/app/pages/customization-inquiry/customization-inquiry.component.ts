@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { InquiryService } from '../../services/inquiry.service';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { CustomizationInquiry } from '../../interfaces/inquiry.interface';
+import { ShopInfoService, ShopInfo } from '../../services/shop-info.service';
 
 @Component({
   selector: 'app-customization-inquiry',
@@ -14,7 +15,10 @@ import { CustomizationInquiry } from '../../interfaces/inquiry.interface';
 })
 export class CustomizationInquiryComponent implements OnInit {
   private inquiryService = inject(InquiryService);
+  private shopInfoService = inject(ShopInfoService);
   private route = inject(ActivatedRoute);
+
+  readonly shopInfo = signal<ShopInfo | undefined>(undefined);
 
   form: CustomizationInquiry = {
     name: '', email: '', phone: '', category: '', description: '', budget: ''
@@ -33,6 +37,7 @@ export class CustomizationInquiryComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.shopInfoService.getShopInfo().subscribe(info => this.shopInfo.set(info));
     this.route.queryParams.subscribe(params => {
       if (params['item']) {
         this.form.description = `I'm interested in a piece similar to "${params['item']}". `;
@@ -43,16 +48,50 @@ export class CustomizationInquiryComponent implements OnInit {
   onSubmit(): void {
     if (!this.agreed() || this.isSubmitting()) return;
     this.isSubmitting.set(true);
-    this.inquiryService.submitInquiry(this.form).subscribe({
+
+    const inquiryData = {
+      type: 'customization',
+      name: this.form.name || 'Anonymous Client',
+      email: this.form.email,
+      phone: this.form.phone || 'N/A',
+      category: this.form.category || 'Customization',
+      description: this.form.description || 'Customization request via website.',
+      budget: this.form.budget || 'Not specified'
+    };
+
+    this.inquiryService.submitInquiry(inquiryData).subscribe({
       next: (res) => {
+        this.openWhatsAppCustomization(this.form);
         this.submitted.set(true);
-        this.successMessage.set(res.message);
+        this.successMessage.set(res?.message || 'Your inquiry has been received. We will contact you within 24 hours.');
         this.isSubmitting.set(false);
       },
-      error: () => {
+      error: (err) => {
+        console.error('Inquiry submission error:', err);
+        // Fallback: Open WhatsApp even if server responds with error
+        this.openWhatsAppCustomization(this.form);
+        this.submitted.set(true);
+        this.successMessage.set('Your customization request has been forwarded to our team.');
         this.isSubmitting.set(false);
       }
     });
+  }
+
+  private openWhatsAppCustomization(data: CustomizationInquiry): void {
+    const info = this.shopInfo();
+    const rawNumber = info?.customizationWhatsapp || info?.whatsapp || '+8801800000000';
+    const waNumber = rawNumber.replace(/[^0-9]/g, '');
+
+    const text = `*New Customization Request via Website*\n\n` +
+      `👤 *Name:* ${data.name}\n` +
+      `✉️ *Email:* ${data.email}\n` +
+      `📞 *Phone:* ${data.phone}\n` +
+      `💎 *Jewellery Type:* ${data.category || 'Custom'}\n` +
+      `💰 *Approx Budget:* ${data.budget || 'Not specified'}\n\n` +
+      `🎨 *Vision Description:*\n${data.description}`;
+
+    const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank');
   }
 
   resetForm(): void {

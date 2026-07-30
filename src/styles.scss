@@ -1,5 +1,5 @@
 /* ===== CARATS — GLOBAL STYLES ===== */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Jost:wght@200;300;400;500&display=swap');
 
 /* ===== LIGHT THEME (DEFAULT) — PRIMARY BRAND: #094828 (ROYAL EMERALD) ===== */
 :root {
@@ -21,11 +21,11 @@
   --deep-charcoal: rgba(9, 72, 40, 0.08);
   --obsidian:      #FAFAF7;
   --warm-dark:     #FFFFFF;
-  --font-display:  'Cormorant Garamond', Georgia, serif;
-  --font-body:     'Jost', sans-serif;
+  --font-display:  'Cinzel', 'Cormorant Garamond', Georgia, serif;
+  --font-body:     'Plus Jakarta Sans', 'Jost', sans-serif;
 
-  --ff-display: 'Cormorant Garamond', Georgia, serif;
-  --ff-body:    'Jost', sans-serif;
+  --ff-display: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
+  --ff-body:    'Plus Jakarta Sans', 'Jost', sans-serif;
   --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --transition-slow: 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 

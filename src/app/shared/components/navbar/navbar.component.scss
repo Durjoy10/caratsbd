@@ -322,8 +322,6 @@
     &__inner { padding: 0 24px; }
   }
   .theme-toggle:not(.theme-toggle--mobile) {
-    display: flex;
-    margin-left: auto;
-    margin-right: 12px;
+    display: none;
   }
 }

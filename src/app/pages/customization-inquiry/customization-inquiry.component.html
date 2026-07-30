@@ -1,7 +1,6 @@
-<!-- Hero -->
 <section class="inquiry-hero parallax-container">
   <div class="inquiry-hero__bg parallax-bg"
-       style="background-image: url('https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1600&q=80')">
+       [style.background-image]="'url(' + (shopInfo()?.customizationBannerImage || 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1600&q=80') + ')'">
   </div>
   <div class="inquiry-hero__overlay"></div>
   <div class="inquiry-hero__content">

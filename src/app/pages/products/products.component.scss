@@ -104,9 +104,9 @@
   .products-section__grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
-  .products-section__grid { grid-template-columns: repeat(2, 1fr); }
-  .products-section { padding: 3rem 1.5rem 5rem; }
+  .products-section__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .products-section { padding: 3rem 1rem 5rem; }
 }
 @media (max-width: 480px) {
-  .products-section__grid { grid-template-columns: 1fr; }
+  .products-section__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }

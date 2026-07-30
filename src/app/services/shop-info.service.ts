@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface StatItem {
@@ -15,9 +15,12 @@ export interface ShopInfo {
   faviconUrl: string;
   phone: string;
   whatsapp: string;
+  customizationWhatsapp?: string;
   email: string;
   address: string;
   hours: string;
+  googleMapUrl?: string;
+  googleMapEmbedUrl?: string;
   facebook: string;
   instagram: string;
   youtube: string;
@@ -38,6 +41,8 @@ export interface ShopInfo {
   heroButton2Link?: string;
 
   promoBgImage?: string;
+  promoQuoteText?: string;
+  promoQuoteAuthor?: string;
   promoBannerImage?: string;
   promoEyebrow?: string;
   promoTitle?: string;
@@ -45,16 +50,21 @@ export interface ShopInfo {
   promoButtonText?: string;
   promoButtonLink?: string;
 
+  customizationBannerImage?: string;
+  contactBannerImage?: string;
+
   statsItems?: StatItem[];
 }
 
 @Injectable({ providedIn: 'root' })
 export class ShopInfoService {
   private http = inject(HttpClient);
+  readonly shopInfo = signal<ShopInfo | null>(null);
 
   getShopInfo(): Observable<ShopInfo> {
     return this.http.get<any>(`${environment.apiUrl}/shop-info`).pipe(
-      map(res => res.data || res)
+      map(res => res.data || res),
+      tap(info => this.shopInfo.set(info))
     );
   }
 }

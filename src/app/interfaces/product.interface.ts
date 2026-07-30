@@ -18,6 +18,10 @@ export interface Product {
   diamondWeight?: number;
   weight?: string;
   price?: number;
+  priceType?: 'fixed' | 'range' | 'inquiry';
+  minPrice?: number;
+  maxPrice?: number;
+  showPrice?: boolean;
   stockQuantity?: number;
   isActive?: boolean;
   featured?: boolean;

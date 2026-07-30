@@ -14,17 +14,25 @@
 
       <!-- Left: Image Gallery -->
       <div class="product-gallery" appScrollReveal>
-        <div class="product-gallery__main">
-          <img [src]="activeImage()" [alt]="prod.name" class="product-gallery__img" />
-          <div class="product-gallery__zoom-hint">Hover to explore</div>
+        <div class="product-gallery__main" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()"
+          (mousemove)="onMouseMove($event)">
+
+          <img [src]="activeImage()" [alt]="prod.name" class="product-gallery__img" [class.is-zoomed]="isZooming()" />
+
+          <!-- Magnifier Lens & Zoom Loupe -->
+          @if (isZooming()) {
+            <div class="magnifier-lens" [style.left.px]="lensX()" [style.top.px]="lensY()"></div>
+            <div class="magnifier-zoom-box" [style.background-image]="'url(' + activeImage() + ')'"
+              [style.background-position]="zoomX() + '% ' + zoomY() + '%'">
+            </div>
+          }
         </div>
+
         @if (prod.images && prod.images.length > 1) {
           <div class="product-gallery__thumbs">
-            @for (img of prod.images; track img) {
-              <button
-                class="product-gallery__thumb"
-                [class.active]="img === activeImage()"
-                (click)="setActiveImage(img)">
+            @for (img of prod.images; track img; let i = $index) {
+              <button class="product-gallery__thumb" [class.active]="i === activeImageIndex()"
+                (click)="setActiveImage(img, i)">
                 <img [src]="img" [alt]="prod.name" />
               </button>
             }
@@ -34,87 +42,117 @@
 
       <!-- Right: Detailed Specifications & Info -->
       <div class="product-info">
-        
-        <!-- Header & Category Meta Badges -->
-        <div appScrollReveal [revealDelay]="150">
-          <div class="product-info__badges">
-            <a [routerLink]="['/category', prod.categorySlug || prod.category.toLowerCase()]" class="product-info__category">
-              {{ prod.category }}
-            </a>
+
+        <!-- 1. Header Meta & Category Badges -->
+        <div class="product-info__header-meta" appScrollReveal [revealDelay]="100">
+          <a [routerLink]="['/category', prod.categorySlug || prod.category.toLowerCase()]"
+            class="product-info__category">
+            {{ prod.category }}
+          </a>
+
+          @if (prod.featured) {
+            <span class="badge-featured">★ Featured Piece</span>
+          }
+          @if (prod.stockQuantity !== undefined && prod.stockQuantity !== null) {
+            <span class="badge-stock" [class.badge-stock--in]="prod.stockQuantity > 0"
+              [class.badge-stock--out]="prod.stockQuantity <= 0">
+              {{ prod.stockQuantity > 0 ? (prod.stockQuantity + ' Available in Stock') : 'Special Order' }}
+            </span>
+          }
+        </div>
+
+        <!-- 2. Product Name / Title -->
+        <h1 class="product-info__name" appScrollReveal [revealDelay]="140">{{ prod.name }}</h1>
+
+        <!-- 3. Price Display -->
+        <div class="product-info__price-box" appScrollReveal [revealDelay]="180">
+          @if (prod.priceType === 'inquiry' || prod.showPrice === false) {
+            <span class="product-info__price product-info__price--inquiry">Price Available on Inquiry</span>
+          } @else if (prod.priceType === 'range' || (prod.minPrice && prod.maxPrice)) {
+            <span class="product-info__price">৳ {{ prod.minPrice | number }} – ৳ {{ prod.maxPrice | number }}</span>
+          } @else if (prod.price && prod.price > 0) {
+            <span class="product-info__price">৳ {{ prod.price | number }}</span>
+          } @else {
+            <span class="product-info__price product-info__price--inquiry">Price Available on Inquiry</span>
+          }
+        </div>
+
+        <!-- 4. Action Button (Single Primary Action) -->
+        <div class="product-info__actions" appScrollReveal [revealDelay]="220">
+          <button type="button" (click)="showInquiryModal.set(true)" class="btn-gold btn-cta-primary btn-single-cta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" style="margin-right:0.4rem">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            <span>Request / Inquire This Piece</span>
+          </button>
+        </div>
+
+        <div class="divider-gold divider-gold--left"></div>
+
+        <!-- 5. Key Specifications (Modern Minimalist List) -->
+        <div class="product-specs-modern" appScrollReveal [revealDelay]="280">
+          <h3 class="specs-section-title">Specifications & Details</h3>
+          <div class="specs-modern-list">
+            <div class="spec-row">
+              <span class="spec-label">Metal Composition</span>
+              <span class="spec-val">{{ prod.baseMetal || prod.material || '18K Gold' }}</span>
+            </div>
+
+            @if (prod.grossWeight || prod.weight) {
+              <div class="spec-row">
+                <span class="spec-label">Gross Weight</span>
+                <span class="spec-val">{{ prod.grossWeight ? (prod.grossWeight + ' g') : prod.weight }}</span>
+              </div>
+            }
+
+            @if (prod.diamondWeight) {
+              <div class="spec-row">
+                <span class="spec-label">Diamond Weight</span>
+                <span class="spec-val text-gold">{{ prod.diamondWeight }} CT</span>
+              </div>
+            }
+
+            @if (prod.catalogPage) {
+              <div class="spec-row">
+                <span class="spec-label">Catalog Reference</span>
+                <span class="spec-val">Page {{ prod.catalogPage }}</span>
+              </div>
+            }
 
             @if (prod.catalogNumber) {
-              <span class="badge-gold">CAT #{{ prod.catalogNumber }}</span>
+              <div class="spec-row">
+                <span class="spec-label">Catalog Number</span>
+                <span class="spec-val text-gold">{{ prod.catalogNumber }}</span>
+              </div>
             }
+
             @if (prod.bagNo) {
-              <span class="badge-outline">Bag: {{ prod.bagNo }}</span>
+              <div class="spec-row">
+                <span class="spec-label">Bag Number</span>
+                <span class="spec-val">{{ prod.bagNo }}</span>
+              </div>
             }
+
             @if (prod.styleCode) {
-              <span class="badge-outline">Style: {{ prod.styleCode }}</span>
-            }
-            @if (prod.featured) {
-              <span class="badge-featured">★ Featured Piece</span>
-            }
-          </div>
-
-          <h1 class="product-info__name">{{ prod.name }}</h1>
-
-          <!-- Price Display -->
-          <div class="product-info__price-box">
-            @if (prod.price && prod.price > 0) {
-              <span class="product-info__price">৳ {{ prod.price | number }}</span>
-            } @else {
-              <span class="product-info__price product-info__price--inquiry">Price Available on Inquiry</span>
+              <div class="spec-row">
+                <span class="spec-label">Style Code</span>
+                <span class="spec-val">{{ prod.styleCode }}</span>
+              </div>
             }
           </div>
-
-          <div class="divider-gold divider-gold--left"></div>
         </div>
 
-        <!-- Specifications Grid Cards (All Admin Fields) -->
-        <div class="product-specs" appScrollReveal [revealDelay]="250">
-          <div class="spec-card">
-            <span class="spec-card__label">Metal Composition</span>
-            <strong class="spec-card__val">{{ prod.baseMetal || prod.material || '18K Gold' }}</strong>
-          </div>
-
-          @if (prod.grossWeight || prod.weight) {
-            <div class="spec-card">
-              <span class="spec-card__label">Gross Weight</span>
-              <strong class="spec-card__val">{{ prod.grossWeight ? (prod.grossWeight + ' g') : prod.weight }}</strong>
-            </div>
-          }
-
-          @if (prod.diamondWeight) {
-            <div class="spec-card">
-              <span class="spec-card__label">Diamond Weight</span>
-              <strong class="spec-card__val text-gold">{{ prod.diamondWeight }} CT</strong>
-            </div>
-          }
-
-          @if (prod.stockQuantity !== undefined && prod.stockQuantity !== null) {
-            <div class="spec-card">
-              <span class="spec-card__label">Stock Status</span>
-              <strong class="spec-card__val" [class.text-green]="prod.stockQuantity > 0" [class.text-red]="prod.stockQuantity <= 0">
-                {{ prod.stockQuantity > 0 ? (prod.stockQuantity + ' Available in Stock') : 'Special Order' }}
-              </strong>
-            </div>
-          }
-
-          @if (prod.catalogPage) {
-            <div class="spec-card">
-              <span class="spec-card__label">Catalog Page</span>
-              <strong class="spec-card__val">Page {{ prod.catalogPage }}</strong>
-            </div>
-          }
-        </div>
-
-        <!-- E-Commerce Description -->
+        <!-- 6. E-Commerce Description -->
         @if (prod.description) {
-          <div class="product-info__desc" [innerHTML]="prod.description | safeCustomHtml" appScrollReveal [revealDelay]="300">
+          <div class="product-info__desc-container" appScrollReveal [revealDelay]="340">
+            <h3 class="specs-section-title">Overview</h3>
+            <div class="product-info__desc" [innerHTML]="prod.description | safeCustomHtml">
+            </div>
           </div>
         }
 
-        <!-- Tags -->
+        <!-- 7. Tags -->
         @if (prod.tags && prod.tags.length > 0) {
           <div class="product-info__tags" appScrollReveal [revealDelay]="380">
             @for (tag of prod.tags; track tag) {
@@ -123,16 +161,8 @@
           </div>
         }
 
-        <!-- Action Buttons -->
-        <div class="product-info__actions" appScrollReveal [revealDelay]="450">
-          <a routerLink="/customization" [queryParams]="{ item: prod.name }" class="btn-gold">
-            <span>Request This Style</span>
-          </a>
-          <a routerLink="/contact" class="btn-ghost">Ask a Question</a>
-        </div>
-
-        <!-- Brand Guarantees -->
-        <div class="product-info__promise" appScrollReveal [revealDelay]="550">
+        <!-- 8. Brand Guarantees -->
+        <div class="product-info__promise" appScrollReveal [revealDelay]="420">
           <div class="promise-item">
             <span class="promise-item__icon">✦</span>
             <span>Handcrafted by master artisans in Bangladesh</span>
@@ -160,15 +190,16 @@
         </div>
         <div class="related__grid">
           @for (p of relatedProducts(); track p._id; let i = $index) {
-            <app-product-card
-              [product]="p"
-              appScrollReveal [revealDelay]="i * 120">
+            <app-product-card [product]="p" appScrollReveal [revealDelay]="i * 120">
             </app-product-card>
           }
         </div>
       </section>
     }
   </div>
+
+  <app-inquiry-modal [visible]="showInquiryModal()" [product]="product() || null" (close)="showInquiryModal.set(false)">
+  </app-inquiry-modal>
 } @else {
   <div class="loading-screen">
     <div class="loading-screen__spinner"></div>

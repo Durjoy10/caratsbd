@@ -115,9 +115,9 @@
   </div>
   <div class="quote-parallax__content container">
     <blockquote class="quote-parallax__text" appScrollReveal>
-      <em>"Jewellery is the most transformative thing you can wear."</em>
+      <em>"{{ shopInfo()?.promoQuoteText || 'Jewellery is the most transformative thing you can wear.' }}"</em>
     </blockquote>
-    <span class="quote-parallax__attr eyebrow">— The Carats Philosophy</span>
+    <span class="quote-parallax__attr eyebrow">{{ shopInfo()?.promoQuoteAuthor || '— The Carats Philosophy' }}</span>
   </div>
 </section>
 

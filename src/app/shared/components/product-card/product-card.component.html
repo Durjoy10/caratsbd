@@ -23,6 +23,9 @@
   <div class="product-card__body">
     <span class="product-card__category">{{ product().category }}</span>
     <h3 class="product-card__name">{{ product().name }}</h3>
-    <span class="product-card__material">{{ product().material || '18K Gold' }}</span>
+    <div class="product-card__meta">
+      <span class="product-card__price">{{ displayPrice(product()) }}</span>
+      <span class="product-card__material">{{ product().material || '18K Gold' }}</span>
+    </div>
   </div>
 </article>

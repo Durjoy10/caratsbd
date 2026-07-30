@@ -3,10 +3,10 @@
     <!-- Logo -->
     <a routerLink="/" class="navbar__logo" (click)="closeMenu()">
       @if (shopInfo()?.logoUrl) {
-        <img [src]="shopInfo()?.logoUrl" [alt]="shopInfo()?.name || 'Carats Fine Jewellery'" class="navbar__logo-img" />
+        <img [src]="shopInfo()?.logoUrl" [alt]="shopInfo()?.name || 'Carats Lab Grown Diamond'" class="navbar__logo-img" />
       } @else {
         <span class="navbar__logo-text">CARATS</span>
-        <span class="navbar__logo-sub">Fine Jewellery</span>
+        <span class="navbar__logo-sub">{{ shopInfo()?.tagline || 'Lab Grown Diamond' }}</span>
       }
     </a>
 
