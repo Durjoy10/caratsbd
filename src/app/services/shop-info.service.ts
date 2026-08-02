@@ -62,7 +62,8 @@ export class ShopInfoService {
   readonly shopInfo = signal<ShopInfo | null>(null);
 
   getShopInfo(): Observable<ShopInfo> {
-    return this.http.get<any>(`${environment.apiUrl}/shop-info`).pipe(
+    const apiUrl = `${environment.apiBaseLink}${environment.ftpPrefix}`;
+    return this.http.get<any>(`${apiUrl}/shop-info`).pipe(
       map(res => res.data || res),
       tap(info => this.shopInfo.set(info))
     );

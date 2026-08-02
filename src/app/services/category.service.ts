@@ -12,7 +12,8 @@ export class CategoryService {
 
   getCategories(): Observable<Category[]> {
     if (!this.categoriesCache$) {
-      this.categoriesCache$ = this.http.get<any>(`${environment.apiUrl}/categories`).pipe(
+      const apiUrl = `${environment.apiBaseLink}${environment.ftpPrefix}`;
+      this.categoriesCache$ = this.http.get<any>(`${apiUrl}/categories`).pipe(
         map(res => {
           const list = res.data || res || [];
           return list.sort((a: Category, b: Category) => (a.order || 0) - (b.order || 0));

@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class InquiryService {
   private http = inject(HttpClient);
-  private baseUrl = environment.apiUrl;
+  private baseUrl = `${environment.apiBaseLink}${environment.ftpPrefix}`;
 
   submitInquiry(inquiry: CustomizationInquiry): Observable<{ message: string; data: any }> {
     return this.http.post<{ message: string; data: any }>(`${this.baseUrl}/inquiries`, inquiry);

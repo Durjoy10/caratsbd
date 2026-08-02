@@ -29,7 +29,7 @@ const MOCK_PRODUCTS: Product[] = [
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl;
+  private apiUrl = `${environment.apiBaseLink}${environment.ftpPrefix}`;
 
   private normalizeProduct(p: any): Product {
     const title = p.name || p.title || 'Untitled Piece';
