@@ -18,4 +18,5 @@ export const environment = {
   VERSION: 1,
   googleClientId:
     '260483768625-uuovm78d6376qr9re389ika2eh4map1o.apps.googleusercontent.com',
+  metaPixelId: '1069806765572653',
 };

@@ -4,6 +4,7 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { ThemeService } from './services/theme.service';
 import { ShopInfoService } from './services/shop-info.service';
+import { MetaPixelService } from './core/meta-pixel.service';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,10 @@ export class AppComponent implements OnInit {
   title = 'carats';
   private themeService = inject(ThemeService);
   private shopInfoService = inject(ShopInfoService);
+  private metaPixelService = inject(MetaPixelService);
 
   ngOnInit(): void {
+    this.metaPixelService.init();
     this.shopInfoService.getShopInfo().subscribe({
       next: (info) => {
         if (info?.faviconUrl) {

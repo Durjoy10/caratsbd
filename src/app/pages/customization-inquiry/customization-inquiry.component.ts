@@ -5,6 +5,7 @@ import { InquiryService } from '../../services/inquiry.service';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { CustomizationInquiry } from '../../interfaces/inquiry.interface';
 import { ShopInfoService, ShopInfo } from '../../services/shop-info.service';
+import { MetaPixelService } from '../../core/meta-pixel.service';
 
 @Component({
   selector: 'app-customization-inquiry',
@@ -17,6 +18,7 @@ export class CustomizationInquiryComponent implements OnInit {
   private inquiryService = inject(InquiryService);
   private shopInfoService = inject(ShopInfoService);
   private route = inject(ActivatedRoute);
+  private metaPixelService = inject(MetaPixelService);
 
   readonly shopInfo = signal<ShopInfo | undefined>(undefined);
 
@@ -47,6 +49,8 @@ export class CustomizationInquiryComponent implements OnInit {
 
   onSubmit(): void {
     if (!this.agreed() || this.isSubmitting()) return;
+    const eventId = this.metaPixelService.trackLead(this.form);
+    this.form.eventId = eventId;
     this.isSubmitting.set(true);
 
     const inquiryData = {
@@ -56,7 +60,8 @@ export class CustomizationInquiryComponent implements OnInit {
       phone: this.form.phone || 'N/A',
       category: this.form.category || 'Customization',
       description: this.form.description || 'Customization request via website.',
-      budget: this.form.budget || 'Not specified'
+      budget: this.form.budget || 'Not specified',
+      eventId: eventId || undefined
     };
 
     this.inquiryService.submitInquiry(inquiryData).subscribe({

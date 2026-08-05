@@ -6,4 +6,5 @@ export interface CustomizationInquiry {
   description: string;
   budget?: string;
   referenceImages?: string[];
+  eventId?: string;
 }
