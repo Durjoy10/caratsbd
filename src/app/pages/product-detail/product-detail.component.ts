@@ -56,10 +56,14 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
             });
             this.startSlideshow();
             const eventId = this.metaPixelService.trackViewContent(product);
+            // Resolve price to send as CAPI value signal
+            let value: number | undefined;
+            if (product.priceType === 'fixed' && product.price) value = product.price;
+            else if (product.priceType === 'range' && product.minPrice) value = product.minPrice;
             // Fire-and-forget — do not await, do not block UI
             this.http.post(
               `${environment.apiBaseLink}${environment.ftpPrefix}/products/${product._id}/view`,
-              { eventId },
+              { eventId, value },
               { headers: { 'Content-Type': 'application/json' } }
             ).subscribe({ error: () => {} }); // swallow errors silently
           }

@@ -285,7 +285,7 @@
 
   &__link {
     font-family: var(--ff-display);
-    font-size: 36px;
+    font-size: 25px;
     font-weight: 300;
     color: var(--clr-cream);
     transition: color 0.3s;
@@ -296,20 +296,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    margin: 8px 0;
+    gap: 12px;
+    margin: 12px 0;
   }
 
   &__label {
-    font-size: 9px;
-    margin-bottom: 8px;
+    font-size: 13px;
+    margin-bottom: 4px;
   }
 
   &__sub-link {
-    font-size: 13px;
-    letter-spacing: 3px;
+    font-size: 18px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--text-secondary);
+    color: var(--clr-cream);
     transition: color 0.3s;
     &:hover { color: var(--clr-gold); }
   }

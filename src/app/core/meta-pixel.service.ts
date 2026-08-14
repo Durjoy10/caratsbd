@@ -35,14 +35,27 @@ export class MetaPixelService {
 
     const eventId = uuidv4();
 
+    // Resolve the best price value to send to Meta
+    let value: number | undefined;
+    if (product.priceType === 'fixed' && product.price) {
+      value = product.price;
+    } else if (product.priceType === 'range' && product.minPrice) {
+      value = product.minPrice;
+    }
+    // priceType === 'inquiry' → no price, omit value
+
     if (typeof fbq !== 'undefined') {
-      fbq('track', 'ViewContent', {
+      const params: Record<string, any> = {
         content_ids: [product._id],
         content_name: product.name,
         content_category: product.category,
         content_type: 'product',
         currency: 'BDT',
-      }, { eventID: eventId });
+      };
+      if (value !== undefined) {
+        params['value'] = value;
+      }
+      fbq('track', 'ViewContent', params, { eventID: eventId });
     }
 
     return eventId;

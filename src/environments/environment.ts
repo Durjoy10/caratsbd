@@ -1,14 +1,14 @@
 export const environment = {
   production: false,
 
-  apiBaseLink: 'http://localhost:3000',
-  ftpBaseLink: 'http://localhost:3000',
+  // apiBaseLink: 'http://localhost:3000',
+  // ftpBaseLink: 'http://localhost:3000',
 
   websiteLink: 'caratsbd.com',
   uiDomain: 'http://localhost:4200',
 
-  // apiBaseLink: 'https://api.caratsbd.com',
-  // ftpBaseLink: 'https://api.caratsbd.com',
+  apiBaseLink: 'https://api.caratsbd.com',
+  ftpBaseLink: 'https://api.caratsbd.com',
 
   ftpPrefixPath: 'http://localhost:3000/api/upload/images',
   ftpPrefix: '/api',
