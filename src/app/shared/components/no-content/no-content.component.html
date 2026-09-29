@@ -1,0 +1,50 @@
+<div class="no-content" [class.no-content--compact]="compact()" role="status" aria-live="polite">
+
+  <!-- Floating diamond logo animation -->
+  <div class="no-content__art" aria-hidden="true">
+    <div class="no-content__ring no-content__ring--1"></div>
+    <div class="no-content__ring no-content__ring--2"></div>
+    <div class="no-content__ring no-content__ring--3"></div>
+    <img src="images/carats.png" alt="" class="no-content__logo" />
+  </div>
+
+  <span class="no-content__eyebrow">{{ kind() === 'not-found' ? '404' : kind() === 'empty' ? 'Nothing here yet' : 'Connection issue' }}</span>
+
+  <h2 class="no-content__title">
+    @if (title()) {
+      {{ title() }}
+    } @else if (kind() === 'not-found') {
+      We couldn't find that page
+    } @else if (kind() === 'empty') {
+      Nothing to show here yet
+    } @else {
+      Our collections couldn't load
+    }
+  </h2>
+
+  <p class="no-content__message">
+    @if (message()) {
+      {{ message() }}
+    } @else if (kind() === 'not-found') {
+      The piece or collection you're looking for may have been moved or no longer exists.
+    } @else if (kind() === 'empty') {
+      New pieces are being prepared — please check back soon.
+    } @else {
+      This may be a temporary network hiccup — your connection or the shop server didn't respond in time.
+    }
+  </p>
+
+  <div class="no-content__actions">
+    @if (kind() !== 'not-found' && showRetry()) {
+      <button type="button" class="btn-gold no-content__retry" (click)="handleRetry()" [disabled]="retrying()">
+        <span class="no-content__retry-icon" [class.no-content__retry-icon--spin]="retrying()">↻</span>
+        <span>{{ retrying() ? 'Retrying…' : 'Try Again' }}</span>
+      </button>
+    }
+    @if (showHomeLink()) {
+      <a routerLink="/" class="btn-ghost"><span>Back to Home</span></a>
+    }
+  </div>
+
+  <p class="no-content__hint">Tip: an unstable connection (like social-media in-app browsers) can interrupt loading.</p>
+</div>

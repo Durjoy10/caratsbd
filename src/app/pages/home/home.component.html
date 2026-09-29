@@ -1,34 +1,53 @@
 <!-- HERO SECTION (HOME BANNER 1 & BACKGROUND) -->
 <section class="hero">
   <div class="hero__bg" [style.transform]="heroParallax()"
-    [style.background-image]="'radial-gradient(ellipse 80% 60% at 70% 50%, rgba(9,72,40,0.06) 0%, transparent 60%), url(' + (shopInfo()?.heroBgImage || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1800&q=70') + ')'">
+    [style.background-image]="'url(' + (shopInfo()?.heroBgImage || 'images/carats-bg.png') + ')'">
     <div class="hero__gradient"></div>
   </div>
 
   <div class="hero__content container">
     <div class="hero__left">
-      <span class="eyebrow">{{ shopInfo()?.heroEyebrow || 'Est. 2012 — Dhaka, Bangladesh' }}</span>
-      <h1 class="hero__title">
-        <em>{{ shopInfo()?.heroTitleLine1 || 'Where Gold' }}</em><br>
-        {{ shopInfo()?.heroTitleLine2 || 'Meets Grace' }}
-      </h1>
-      <div class="hero__subtitle"
-        [innerHTML]="(shopInfo()?.heroSubtitle || 'Handcrafted fine jewellery for those who believe elegance is not worn — it is lived.') | safeCustomHtml">
-      </div>
-      <div class="hero__actions">
-        <a [routerLink]="shopInfo()?.heroButton1Link || '/category/rings'" class="btn-gold">
-          <span>{{ shopInfo()?.heroButton1Text || 'Explore Collections' }}</span>
-        </a>
-        <a [routerLink]="shopInfo()?.heroButton2Link || '/customization'" class="btn-ghost">
-          <span>{{ shopInfo()?.heroButton2Text || 'Custom Orders' }}</span>
-        </a>
-      </div>
+      @if (shopInfoLoading()) {
+        <div class="hero__skeleton-stack" aria-hidden="true">
+          <span class="skeleton-line skeleton-line--w30"></span>
+          <span class="skeleton-line hero__skeleton-title"></span>
+          <span class="skeleton-line skeleton-line--w60"></span>
+        </div>
+      } @else {
+        <span class="eyebrow">{{ shopInfo()?.heroEyebrow }}</span>
+        <h1 class="hero__title">
+          @if (shopInfo()?.heroTitleLine1) { <em>{{ shopInfo()?.heroTitleLine1 }}</em><br> }
+          {{ shopInfo()?.heroTitleLine2 }}
+        </h1>
+        @if (shopInfo()?.heroSubtitle) {
+          <div class="hero__subtitle" [innerHTML]="shopInfo()!.heroSubtitle | safeCustomHtml"></div>
+        }
+
+        @if (shopInfoError()) {
+          <div class="hero__note">Some content couldn't load just now.</div>
+          <app-no-content kind="error" [compact]="true" [showHomeLink]="false"
+            [retrying]="shopInfoLoading()" (retry)="retryShopInfo()"></app-no-content>
+        }
+
+        @if (shopInfo()?.heroButton1Text && shopInfo()?.heroButton1Link) {
+          <div class="hero__actions">
+            <a [routerLink]="shopInfo()!.heroButton1Link" class="btn-gold">
+              <span>{{ shopInfo()!.heroButton1Text }}</span>
+            </a>
+            @if (shopInfo()?.heroButton2Text && shopInfo()?.heroButton2Link) {
+              <a [routerLink]="shopInfo()!.heroButton2Link" class="btn-ghost">
+                <span>{{ shopInfo()!.heroButton2Text }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="hero__right">
       <div class="hero__img-frame">
         <img
-          [src]="shopInfo()?.heroBannerImage || 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=85'"
+          [src]="shopInfo()?.heroBannerImage || 'images/carats-bg.png'"
           alt="Featured jewellery piece" class="hero__img" />
         <div class="hero__img-accent"></div>
       </div>
@@ -41,17 +60,18 @@
   </div>
 </section>
 
-<!-- STATS MARQUEE (DYNAMIC STATS TICKER) -->
+<!-- STATS MARQUEE (rendered only when the API provides stats) -->
+@if (stats().length > 0) {
 <section class="stats-bar">
   <div class="stats-bar__track">
-    @for (stat of stats(); track stat.label; let i = $index) {
+    @for (stat of stats(); track stat.label) {
     <div class="stats-bar__item">
       <span class="stats-bar__value">{{ stat.value }}</span>
       <span class="stats-bar__label">{{ stat.label }}</span>
     </div>
     }
     <!-- Duplicate for infinite scroll effect -->
-    @for (stat of stats(); track 'dup-' + stat.label + '-' + i; let i = $index) {
+    @for (stat of stats(); track 'dup-' + stat.label; let i = $index) {
     <div class="stats-bar__item" aria-hidden="true">
       <span class="stats-bar__value">{{ stat.value }}</span>
       <span class="stats-bar__label">{{ stat.label }}</span>
@@ -59,6 +79,7 @@
     }
   </div>
 </section>
+}
 
 <!-- CATEGORIES SECTION (DYNAMIC CATEGORIES GRID) -->
 <section class="categories section-spacing">
@@ -68,21 +89,36 @@
       <h2 class="categories__title">Crafted for Every Occasion</h2>
     </div>
 
-    <div class="categories__grid">
-      @for (cat of categories(); track cat.slug; let i = $index) {
-      <a [routerLink]="['/category', cat.slug]" class="category-card" appScrollReveal [revealDelay]="i * 100">
-        <div class="category-card__img-wrap">
-          <img [src]="getCatImage(cat)" [alt]="cat.name" class="category-card__img" />
-          <div class="category-card__overlay"></div>
-        </div>
-        <div class="category-card__body">
-          <h3 class="category-card__name">{{ cat.name }}</h3>
-          <div class="category-card__desc" [innerHTML]="cat.description | safeCustomHtml"></div>
-          <span class="category-card__link">Explore →</span>
-        </div>
-      </a>
-      }
-    </div>
+    @if (categoriesLoading()) {
+      <div class="categories__grid" aria-busy="true">
+        @for (i of [0, 1, 2, 3]; track i) {
+          <div class="product-skeleton" aria-hidden="true">
+            <div class="product-skeleton__img"></div>
+            <div class="product-skeleton__line skeleton-line"></div>
+            <div class="product-skeleton__line skeleton-line skeleton-line--w60"></div>
+          </div>
+        }
+      </div>
+    } @else if (categoriesError()) {
+      <app-no-content kind="error" [compact]="true" [retrying]="categoriesLoading()"
+        (retry)="retryCategories()"></app-no-content>
+    } @else {
+      <div class="categories__grid">
+        @for (cat of categories(); track cat.slug; let i = $index) {
+        <a [routerLink]="['/category', cat.slug]" class="category-card" appScrollReveal [revealDelay]="i * 100">
+          <div class="category-card__img-wrap">
+            <img [src]="getCatImage(cat)" [alt]="cat.name" class="category-card__img" />
+            <div class="category-card__overlay"></div>
+          </div>
+          <div class="category-card__body">
+            <h3 class="category-card__name">{{ cat.name }}</h3>
+            <div class="category-card__desc" [innerHTML]="cat.description | safeCustomHtml"></div>
+            <span class="category-card__link">Explore →</span>
+          </div>
+        </a>
+        }
+      </div>
+    }
   </div>
 </section>
 
@@ -95,12 +131,27 @@
       <p class="featured__subtitle">Each piece is crafted with exceptional attention to detail.</p>
     </div>
 
-    <div class="featured__grid">
-      @for (product of featuredProducts(); track product._id; let i = $index) {
-      <app-product-card [product]="product" [index]="i" appScrollReveal [revealDelay]="i * 80">
-      </app-product-card>
-      }
-    </div>
+    @if (featuredLoading()) {
+      <div class="featured__grid" aria-busy="true">
+        @for (i of [0, 1, 2, 3]; track i) {
+          <div class="product-skeleton" aria-hidden="true">
+            <div class="product-skeleton__img"></div>
+            <div class="product-skeleton__line skeleton-line"></div>
+            <div class="product-skeleton__line skeleton-line skeleton-line--w60"></div>
+          </div>
+        }
+      </div>
+    } @else if (featuredError()) {
+      <app-no-content kind="error" [compact]="true" [retrying]="featuredLoading()"
+        (retry)="retryFeatured()"></app-no-content>
+    } @else {
+      <div class="featured__grid">
+        @for (product of featuredProducts(); track product._id; let i = $index) {
+        <app-product-card [product]="product" [index]="i" appScrollReveal [revealDelay]="i * 80">
+        </app-product-card>
+        }
+      </div>
+    }
 
     <div class="featured__footer" appScrollReveal>
       <a routerLink="/products" class="btn-ghost"><span>View All Collections</span></a>
@@ -108,42 +159,49 @@
   </div>
 </section>
 
-<!-- PARALLAX QUOTE SECTION (PROMO BANNER 2 BACKGROUND) -->
+<!-- PARALLAX QUOTE SECTION (only when the API provides it) -->
+@if (shopInfo()?.promoQuoteText) {
 <section class="quote-parallax">
   <div class="quote-parallax__bg"
-    [style.background-image]="'url(' + (shopInfo()?.promoBgImage || 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1600&q=60') + ')'">
-  </div>
+    [style.background-image]="'url(' + (shopInfo()?.promoBgImage || 'images/carats-bg.png') + ')'"></div>
   <div class="quote-parallax__content container">
     <blockquote class="quote-parallax__text" appScrollReveal>
-      <em>"{{ shopInfo()?.promoQuoteText || 'Jewellery is the most transformative thing you can wear.' }}"</em>
+      <em>"{{ shopInfo()?.promoQuoteText }}"</em>
     </blockquote>
-    <span class="quote-parallax__attr eyebrow">{{ shopInfo()?.promoQuoteAuthor || '— The Carats Philosophy' }}</span>
+    @if (shopInfo()?.promoQuoteAuthor) {
+      <span class="quote-parallax__attr eyebrow">{{ shopInfo()?.promoQuoteAuthor }}</span>
+    }
   </div>
 </section>
+}
 
-<!-- CRAFT STORY SECTION (HOME BANNER 2 FOREGROUND) -->
+<!-- CRAFT STORY SECTION (only when the API provides it) -->
+@if (shopInfo()?.promoTitle) {
 <section class="craft section-spacing">
   <div class="container craft__inner">
     <div class="craft__visual" appScrollReveal>
       <img
-        [src]="shopInfo()?.promoBannerImage || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=700&q=80'"
+        [src]="shopInfo()?.promoBannerImage || 'images/carats-bg.png'"
         alt="Jewellery craftsmanship" class="craft__img" />
       <div class="craft__img-bg"></div>
     </div>
 
     <div class="craft__content" appScrollReveal [revealDelay]="200">
-      <span class="eyebrow">{{ shopInfo()?.promoEyebrow || 'Our Story' }}</span>
-      <h2 class="craft__title">{{ shopInfo()?.promoTitle || 'Tradition Meets Modern Elegance' }}</h2>
-      <div class="craft__body"
-        [innerHTML]="(shopInfo()?.promoSubtitle || 'For over a decade, Carats has been crafting fine jewellery that honours Bangladesh\'s rich goldsmithing heritage while embracing contemporary design.') | safeCustomHtml">
-      </div>
+      @if (shopInfo()?.promoEyebrow) { <span class="eyebrow">{{ shopInfo()?.promoEyebrow }}</span> }
+      <h2 class="craft__title">{{ shopInfo()?.promoTitle }}</h2>
+      @if (shopInfo()?.promoSubtitle) {
+        <div class="craft__body" [innerHTML]="shopInfo()!.promoSubtitle | safeCustomHtml"></div>
+      }
       <div class="gold-line--left gold-line" style="margin: 28px 0;"></div>
-      <a [routerLink]="shopInfo()?.promoButtonLink || '/customization'" class="btn-gold">
-        <span>{{ shopInfo()?.promoButtonText || 'Commission a Piece' }}</span>
-      </a>
+      @if (shopInfo()?.promoButtonText && shopInfo()?.promoButtonLink) {
+        <a [routerLink]="shopInfo()!.promoButtonLink" class="btn-gold">
+          <span>{{ shopInfo()!.promoButtonText }}</span>
+        </a>
+      }
     </div>
   </div>
 </section>
+}
 
 <!-- CUSTOMIZATION CTA SECTION -->
 <section class="cta-band">

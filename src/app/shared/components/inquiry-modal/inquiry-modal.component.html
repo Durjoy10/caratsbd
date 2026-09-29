@@ -29,7 +29,7 @@
         @if (product(); as prod) {
           <div class="inquiry-sheet__product-preview">
             <div class="product-thumb">
-              <img [src]="prod.images && prod.images.length ? prod.images[0] : 'assets/images/placeholder.jpg'" [alt]="prod.name" />
+              <img [src]="prod.images && prod.images.length ? prod.images[0] : 'images/carats-bg.png'" [alt]="prod.name" />
             </div>
             <div class="product-info">
               <h4>{{ prod.name }}</h4>

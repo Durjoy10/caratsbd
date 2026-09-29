@@ -514,6 +514,16 @@
   to { transform: rotate(360deg); }
 }
 
+/* Error / not-found state wrapper */
+.product-detail__state {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--clr-bg);
+  padding: 4rem 1rem;
+}
+
 @media (max-width: 960px) {
   .product-detail__body {
     grid-template-columns: 1fr;

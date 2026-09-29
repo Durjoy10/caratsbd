@@ -1,8 +1,8 @@
-<!-- Category Hero -->
+<!-- Category Hero (only when the collection exists) -->
 @if (category(); as cat) {
   <section class="cat-hero parallax-container">
     <div class="cat-hero__bg parallax-bg"
-         [style.background-image]="'url(' + (cat.coverImage || cat.image) + ')'">
+         [style.background-image]="'url(' + (cat.coverImage || cat.image || 'images/carats-bg.png') + ')'">
     </div>
     <div class="cat-hero__overlay"></div>
     <div class="cat-hero__content">
@@ -19,37 +19,61 @@
   <span>/</span>
   <a routerLink="/products">Collections</a>
   <span>/</span>
-  <span class="breadcrumb__current">{{ category()?.name }}</span>
+  <span class="breadcrumb__current">{{ category()?.name || 'Collection' }}</span>
 </div>
 
 <!-- Products -->
 <section class="cat-products">
   <div class="cat-products__header" appScrollReveal>
-    <h2>{{ products().length }} Pieces</h2>
+    <h2>
+      @if (loading() && !error()) {
+        <span class="skeleton-line skeleton-line--w30"></span>
+      } @else if (!error()) {
+        {{ products().length }} Pieces
+      }
+    </h2>
     <div class="divider-gold divider-gold--left"></div>
   </div>
 
-  <div class="cat-products__grid">
-    @for (product of products(); track product._id; let i = $index) {
-      <app-product-card
-        [product]="product"
-        appScrollReveal [revealDelay]="(i % 4) * 100">
-      </app-product-card>
-    }
-  </div>
-
-  @if (products().length === 0 && !loading()) {
-    <div class="cat-products__empty">
-      <p>No pieces available in this collection yet.</p>
-      <a routerLink="/products" class="btn-gold" style="margin-top:2rem"><span>Browse All</span></a>
+  @if (error()) {
+    <!-- Load failed OR unknown collection — animated, tap-friendly retry -->
+    <app-no-content
+      [kind]="category() === undefined && !loading() ? 'not-found' : 'error'"
+      [title]="category() === undefined && !loading() ? 'Collection not found' : ''"
+      [retrying]="retrying()"
+      (retry)="retry()">
+    </app-no-content>
+  } @else if (loading()) {
+    <div class="cat-products__grid" aria-busy="true">
+      @for (i of [0, 1, 2, 3]; track i) {
+        <div class="product-skeleton" aria-hidden="true">
+          <div class="product-skeleton__img"></div>
+          <div class="product-skeleton__line skeleton-line"></div>
+          <div class="product-skeleton__line skeleton-line skeleton-line--w60"></div>
+        </div>
+      }
     </div>
+  } @else {
+    <div class="cat-products__grid">
+      @for (product of products(); track product._id; let i = $index) {
+        <app-product-card
+          [product]="product"
+          appScrollReveal [revealDelay]="(i % 4) * 100">
+        </app-product-card>
+      }
+    </div>
+  }
+
+  @if (products().length === 0 && !loading() && !error()) {
+    <app-no-content kind="empty" title="No pieces in this collection yet"
+      [showRetry]="false"></app-no-content>
   }
 </section>
 
 <!-- Related CTA -->
 <section class="related-cta parallax-container">
   <div class="related-cta__bg parallax-bg"
-       style="background-image: url('https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=1600&q=80')">
+       [style.background-image]="'url(' + (category()?.coverImage || category()?.image || 'images/carats-bg.png') + ')'">
   </div>
   <div class="related-cta__overlay"></div>
   <div class="related-cta__content">

@@ -108,6 +108,24 @@
     border-radius: 4px;
   }
 
+  &__skeleton-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  &__skeleton-title {
+    width: 70%;
+    height: 2.4rem;
+  }
+
+  &__note {
+    font-size: 13px;
+    color: var(--clr-muted);
+    font-style: italic;
+  }
+
   &__scroll-indicator {
     position: absolute;
     bottom: 40px;

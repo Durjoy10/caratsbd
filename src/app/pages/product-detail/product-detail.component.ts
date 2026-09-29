@@ -8,13 +8,15 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { SafeCustomHtmlPipe } from '../../shared/pipes/safe-custom-html.pipe';
 import { InquiryModalComponent } from '../../shared/components/inquiry-modal/inquiry-modal.component';
+import { NoContentComponent } from '../../shared/components/no-content/no-content.component';
 import { MetaPixelService } from '../../core/meta-pixel.service';
 import { environment } from '../../../environments/environment';
+import { normalizeSlug } from '../../shared/utils/slug.utils';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [RouterLink, DecimalPipe, ProductCardComponent, ScrollRevealDirective, SafeCustomHtmlPipe, InquiryModalComponent],
+  imports: [RouterLink, DecimalPipe, ProductCardComponent, ScrollRevealDirective, SafeCustomHtmlPipe, InquiryModalComponent, NoContentComponent],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
@@ -31,6 +33,12 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   readonly activeImageIndex = signal(0);
   readonly showInquiryModal = signal(false);
 
+  /* Loading / error / not-found states — no more infinite spinner. */
+  readonly loading = signal(true);
+  readonly error = signal(false);
+  readonly notFound = signal(false);
+  readonly retrying = signal(false);
+
   /* Slideshow Timer (10 Seconds) */
   readonly isHovered = signal(false);
   private slideInterval: any = null;
@@ -44,31 +52,61 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const id = params['id'];
-        this.productService.getProductById(id).subscribe(product => {
-          this.product.set(product);
-          if (product) {
-            this.activeImageIndex.set(0);
-            this.activeImage.set(product.images[0] || '');
-            const catSlug = product.categorySlug || product.category.toLowerCase();
-            this.productService.getProductsByCategory(catSlug).subscribe(related => {
-              this.relatedProducts.set(related.filter(p => p._id !== product._id).slice(0, 4));
-            });
-            this.startSlideshow();
-            const eventId = this.metaPixelService.trackViewContent(product);
-            // Resolve price to send as CAPI value signal
-            let value: number | undefined;
-            if (product.priceType === 'fixed' && product.price) value = product.price;
-            else if (product.priceType === 'range' && product.minPrice) value = product.minPrice;
-            // Fire-and-forget — do not await, do not block UI
-            this.http.post(
-              `${environment.apiBaseLink}${environment.ftpPrefix}/products/${product._id}/view`,
-              { eventId, value },
-              { headers: { 'Content-Type': 'application/json' } }
-            ).subscribe({ error: () => {} }); // swallow errors silently
-          }
-        });
+      this.load(params['id']);
     });
+  }
+
+  load(id: string): void {
+    this.loading.set(true);
+    this.error.set(false);
+    this.notFound.set(false);
+    this.product.set(undefined);
+    this.relatedProducts.set([]);
+    this.stopSlideshow();
+
+    this.productService.getProductById(id).subscribe({
+      next: product => {
+        this.loading.set(false);
+        this.retrying.set(false);
+
+        if (!product) {
+          // Data loaded fine, but this id/slug doesn't exist.
+          this.notFound.set(true);
+          return;
+        }
+
+        this.product.set(product);
+        this.activeImageIndex.set(0);
+        this.activeImage.set(product.images[0] || '');
+        const catSlug = product.categorySlug || normalizeSlug(product.category);
+        this.productService.getProductsByCategory(catSlug).subscribe(related => {
+          this.relatedProducts.set(related.filter(p => p._id !== product._id).slice(0, 4));
+        });
+        this.startSlideshow();
+        const eventId = this.metaPixelService.trackViewContent(product);
+        // Resolve price to send as CAPI value signal
+        let value: number | undefined;
+        if (product.priceType === 'fixed' && product.price) value = product.price;
+        else if (product.priceType === 'range' && product.minPrice) value = product.minPrice;
+        // Fire-and-forget — do not await, do not block UI
+        this.http.post(
+          `${environment.apiBaseLink}${environment.ftpPrefix}/products/${product._id}/view`,
+          { eventId, value },
+          { headers: { 'Content-Type': 'application/json' } }
+        ).subscribe({ error: () => {} }); // swallow errors silently
+      },
+      error: () => {
+        this.loading.set(false);
+        this.retrying.set(false);
+        this.error.set(true);
+      }
+    });
+  }
+
+  retry(): void {
+    this.retrying.set(true);
+    const id = this.route.snapshot.params['id'];
+    this.load(id);
   }
 
   ngOnDestroy(): void {

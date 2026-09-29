@@ -45,7 +45,7 @@
 
         <!-- 1. Header Meta & Category Badges -->
         <div class="product-info__header-meta" appScrollReveal [revealDelay]="100">
-          <a [routerLink]="['/category', prod.categorySlug || prod.category.toLowerCase()]"
+          <a [routerLink]="['/category', prod.categorySlug]"
             class="product-info__category">
             {{ prod.category }}
           </a>
@@ -200,6 +200,16 @@
 
   <app-inquiry-modal [visible]="showInquiryModal()" [product]="product() || null" (close)="showInquiryModal.set(false)">
   </app-inquiry-modal>
+} @else if (error()) {
+  <div class="product-detail__state">
+    <app-no-content kind="error" title="This piece couldn't load"
+      [retrying]="retrying()" (retry)="retry()"></app-no-content>
+  </div>
+} @else if (notFound()) {
+  <div class="product-detail__state">
+    <app-no-content kind="not-found" title="Piece not found"
+      [showRetry]="false"></app-no-content>
+  </div>
 } @else {
   <div class="loading-screen">
     <div class="loading-screen__spinner"></div>

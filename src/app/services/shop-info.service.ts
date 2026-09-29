@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, map, tap } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, map, tap, catchError, shareReplay, retry, defer, throwError, timer } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface StatItem {
@@ -59,13 +59,32 @@ export interface ShopInfo {
 @Injectable({ providedIn: 'root' })
 export class ShopInfoService {
   private http = inject(HttpClient);
+  private shopInfoCache$: Observable<ShopInfo> | null = null;
   readonly shopInfo = signal<ShopInfo | null>(null);
 
   getShopInfo(): Observable<ShopInfo> {
-    const apiUrl = `${environment.apiBaseLink}${environment.ftpPrefix}`;
-    return this.http.get<any>(`${apiUrl}/shop-info`).pipe(
-      map(res => res.data || res),
-      tap(info => this.shopInfo.set(info))
-    );
+    // One shared request for the whole session (navbar, footer, pages all
+    // subscribe); retried on transient network/server errors like products.
+    if (!this.shopInfoCache$) {
+      const apiUrl = `${environment.apiBaseLink}${environment.ftpPrefix}`;
+      this.shopInfoCache$ = defer(() => this.http.get<any>(`${apiUrl}/shop-info`)).pipe(
+        retry({
+          count: 2,
+          delay: (err: HttpErrorResponse, attempt: number) =>
+            err instanceof HttpErrorResponse && err.status >= 400 && err.status < 500
+              ? throwError(() => err)
+              : timer(400 * (attempt + 1))
+        }),
+        map(res => res.data || res),
+        tap(info => this.shopInfo.set(info)),
+        shareReplay({ bufferSize: 1, refCount: false }),
+        catchError((err: HttpErrorResponse) => {
+          // Reset so the next navigation retries instead of being stuck.
+          this.shopInfoCache$ = null;
+          return throwError(() => err);
+        })
+      );
+    }
+    return this.shopInfoCache$;
   }
 }

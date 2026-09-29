@@ -26,7 +26,8 @@ export class AppComponent implements OnInit {
         if (info?.faviconUrl) {
           this.setFavicon(info.faviconUrl);
         }
-      }
+      },
+      error: () => {} // favicon is cosmetic — navbar/pages show their own error UI
     });
   }
 

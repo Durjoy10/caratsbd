@@ -39,7 +39,10 @@ export class ContactComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.shopInfoService.getShopInfo().subscribe(info => this.shopInfo.set(info));
+    this.shopInfoService.getShopInfo().subscribe({
+      next: info => this.shopInfo.set(info),
+      error: () => {} // page still works — WhatsApp fallback number is used
+    });
   }
 
   sendMessage(): void {

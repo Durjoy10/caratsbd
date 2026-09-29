@@ -39,7 +39,10 @@ export class CustomizationInquiryComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.shopInfoService.getShopInfo().subscribe(info => this.shopInfo.set(info));
+    this.shopInfoService.getShopInfo().subscribe({
+      next: info => this.shopInfo.set(info),
+      error: () => {} // page still works — WhatsApp fallback number is used
+    });
     this.route.queryParams.subscribe(params => {
       if (params['item']) {
         this.form.description = `I'm interested in a piece similar to "${params['item']}". `;
